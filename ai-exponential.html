@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policy on the AI Exponential — Dario Amodei</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --bg: #141413;
+  --bg-card: #1c1c1a;
+  --bg-elevated: #242421;
+  --text: #e6e0d8;
+  --text-muted: #a09888;
+  --text-faint: #6b6458;
+  --accent: #c9a84c;
+  --accent-dim: #8b7230;
+  --border: #2a2824;
+  --border-light: #3a3832;
+  --cn-text: #b8b0a4;
+  --cn-border: #3a3428;
+  --em-color: #ede4d3;
+  --strong-color: #f0eadc;
+  --accent-hover: #e4c76b;
+  --selection-bg: rgba(201, 168, 76, 0.25);
+  --scrollbar-track: #141413;
+  --scrollbar-thumb: #3a3832;
+  --scrollbar-thumb-hover: #6b6458;
+  --progress-gradient: linear-gradient(90deg, #c9a84c, #e4c76b);
+  --toggle-bg: #242421;
+  --toggle-border: #3a3832;
+  --radius: 6px;
+  --max-width: 680px;
+}
+
+[data-theme="light"] {
+  --bg: #fdf6ee;
+  --bg-card: #f5ede0;
+  --bg-elevated: #ede3d3;
+  --text: #3d3227;
+  --text-muted: #8b7660;
+  --text-faint: #b5a590;
+  --accent: #c0611a;
+  --accent-dim: #d4955a;
+  --border: #e5d9c6;
+  --border-light: #d9ccb5;
+  --cn-text: #6b5d4a;
+  --cn-border: #d4c4a8;
+  --em-color: #5a3e28;
+  --strong-color: #2d2015;
+  --accent-hover: #e07830;
+  --selection-bg: rgba(192, 97, 26, 0.2);
+  --scrollbar-track: #fdf6ee;
+  --scrollbar-thumb: #d9ccb5;
+  --scrollbar-thumb-hover: #b5a590;
+  --progress-gradient: linear-gradient(90deg, #c0611a, #e07830);
+  --toggle-bg: #f5ede0;
+  --toggle-border: #d9ccb5;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', Georgia, serif;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* Reading progress bar */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--progress-gradient);
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* Header */
+header {
+  padding: 10vh 1.5rem 3rem;
+  text-align: center;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+header .tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 0.3em 1em;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+header .subtitle {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.04em;
+}
+
+header .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+header .divider {
+  width: 40px;
+  height: 1px;
+  background: var(--accent-dim);
+  margin: 2rem auto 0;
+}
+
+/* Article container */
+article {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+}
+
+/* Section headings */
+article h2 {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.3;
+  color: var(--text);
+  margin: 3.5rem 0 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  letter-spacing: 0.01em;
+}
+
+article h3 {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--accent);
+  margin: 2.5rem 0 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+/* English paragraphs */
+article p.en {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text);
+  margin: 1.2rem 0 0;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Chinese translation */
+article p.cn {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--cn-text);
+  margin: 0.3rem 0 1.4rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--cn-border);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* Standalone translated heading */
+article h2 + p.cn-heading {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: -0.5rem 0 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Blockquote */
+blockquote {
+  margin: 2rem 0;
+  padding: 1.2rem 1.5rem;
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent-dim);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+blockquote p {
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* List items */
+article ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0;
+}
+
+article ul li {
+  position: relative;
+  padding-left: 1.6rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+article ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+}
+
+article ul li p.cn {
+  margin-top: 0.15rem;
+}
+
+/* Footnotes section */
+.footnotes {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.footnotes h2 {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.footnotes ol {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  line-height: 1.6;
+  padding-left: 1.5rem;
+}
+
+.footnotes ol li {
+  margin-bottom: 0.5rem;
+}
+
+/* Inline emphasis */
+em {
+  font-style: italic;
+  color: var(--em-color);
+}
+
+strong {
+  font-weight: 600;
+  color: var(--strong-color);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  html { font-size: 16px; }
+  header { padding: 6vh 1.2rem 2rem; }
+  article { padding: 0 1.2rem 4rem; }
+  article p.en { font-size: 1rem; text-align: left; }
+  article p.cn { font-size: 0.83rem; }
+  article h2 { font-size: 1.35rem; margin: 2.5rem 0 1rem; }
+}
+
+/* Selection */
+::selection {
+  background: var(--selection-bg);
+  color: var(--text);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  display: flex;
+  gap: 0;
+  background: var(--toggle-bg);
+  border: 1px solid var(--toggle-border);
+  border-radius: 100px;
+  padding: 3px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.theme-toggle button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  background: transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-toggle button.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.theme-toggle button:not(.active) {
+  color: var(--text-muted);
+}
+@media (max-width: 640px) {
+  .theme-toggle { top: 0.6rem; right: 0.6rem; }
+  .theme-toggle button { width: 32px; height: 32px; font-size: 0.9rem; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div class="theme-toggle" aria-label="切换主题">
+  <button id="btn-light" title="米色模式">☀</button>
+  <button id="btn-dark" class="active" title="暗黑模式">☾</button>
+</div>
+
+<header>
+  <div class="tag">Policy Essay · June 2026</div>
+  <h1>Policy on the AI Exponential</h1>
+  <p class="subtitle">人工智能指数增长时代的政策思考</p>
+  <p class="meta">Dario Amodei · CEO of Anthropic</p>
+  <p class="meta" style="margin-top:0.3rem;">中文翻译 / Chinese Translation</p>
+  <div class="divider"></div>
+</header>
+
+<article>
+
+<!-- INTRO: Hobbits and Treebeard -->
+<p class="en">In one of the side plots to <em>The Lord of the Rings</em>, two of the Hobbits attempt to rouse Treebeard — a wise but ponderous sentient tree — to defend his forest from an army that is cutting it down. The problem is that Treebeard operates at a very different speed than the Hobbits. It takes him a full day simply to say hello to another tree, so getting him and his peers to act fast enough is nearly impossible.</p>
+<p class="cn">在《指环王》的一个支线情节中，两个霍比特人试图唤醒树胡——一棵睿智但迟缓的树人——来保卫他的森林免受砍伐大军的侵袭。问题在于，树胡的行动速度与霍比特人截然不同。他跟另一棵树打个招呼都需要一整天，因此让他和他的同伴迅速行动起来几乎是不可能的。</p>
+
+<p class="en">The intersection of AI and our political institutions feels a bit like the Hobbits and Treebeard. AI is advancing at a lightning pace — in only four years, AI models have gone from barely being able to write a coherent line of code to writing most of the code at major AI companies. Similar gains have been made in biology, physics, math, finance, law, translation, and many other fields. AI's scaling laws, which predict an exponential increase in general cognitive capabilities with increasing computing power, now have over a decade of empirical evidence behind them. If these scaling laws continue for only a year or two longer, we are likely to get what I've called Powerful AI, or "a country of geniuses in a datacenter".</p>
+<p class="cn">人工智能与我们的政治制度之间的交集，有点像霍比特人和树胡。人工智能正以闪电般的速度前进——仅仅四年时间，AI模型就从几乎无法写出一行连贯的代码，发展到在主要AI公司中编写大部分代码。在生物学、物理学、数学、金融、法律、翻译等诸多领域也取得了类似的进步。AI的规模法则（scaling laws）预测，随着计算能力的增加，通用认知能力将呈指数级增长，这一预测如今已有十多年的经验证据支撑。如果这些规模法则再持续一两年，我们很可能会迎来我所说的"强大AI"——"数据中心里的天才之国"。</p>
+
+<p class="en">By contrast, policy — and especially legislation — moves very slowly. Often this is for good reasons: governments have grave powers, and it's usually for the best that they aren't used too hastily. But the mismatch in timescale is nevertheless very painful: in the several years that it can take Congress to act, AI can go from an amusing toy to the full country of geniuses.</p>
+<p class="cn">相比之下，政策——尤其是立法——推进得非常缓慢。这通常有其正当理由：政府拥有重大权力，不应草率行使通常是件好事。但时间尺度上的错配仍然非常痛苦：在国会采取行动所需的几年时间里，AI可以从一个有趣的玩具发展成一个完整的天才之国。</p>
+
+<p class="en">Over the last few years since AI has become a major commercial technology, those of us who wanted to handle it responsibly have faced a dilemma. We could see clearly where the exponential was going: we strongly suspected that within a few years AI would be one of the rare technologies that fundamentally reshapes the entire policy landscape, in the same way that nuclear weapons reshaped geopolitics and the industrial revolution fundamentally reshaped every economic and social issue. But to those looking only at what AI could do at the time, it looked like a much more mundane technology — similar perhaps to the latest consumer app or cryptocurrency. It was hard to convince most policymakers and companies that anything other than a laissez faire attitude made sense. And to be fair, the fact that AI's radical effects were not yet present, and that we didn't know exactly what shape they might take, made it difficult to design the right policies even if there had been the will to act.</p>
+<p class="cn">在AI成为重要商业技术的过去几年里，我们这些希望负责任地应对它的人面临着一个两难困境。我们能清楚地看到指数增长的去向：我们强烈怀疑，几年之内，AI将成为少数从根本上重塑整个政策格局的技术之一，就像核武器重塑了地缘政治、工业革命从根本上重塑了每一个经济和社会议题一样。但对于那些只看到当时AI能力的人来说，它看起来更像是一种平凡的技术——也许类似于最新的消费应用或加密货币。很难说服大多数政策制定者和公司，自由放任之外的态度是有意义的。公平地说，AI的激进影响尚未显现，我们也不确切知道它们将以何种形式出现，这使得即使有行动的意愿，也很难设计出正确的政策。</p>
+
+<p class="en">Given the limits imposed by this situation, many safety advocates (including Anthropic) have so far been focused on advocating for policy actions that preserve optionality, tee up a fast reaction in the future, or give the world better insight into what is coming down the pike — things like transparency legislation, export controls on chips, and data collection on AI's labor effects. These are not enough, but they have felt like all that was possible.</p>
+<p class="cn">鉴于这种情况带来的限制，许多安全倡导者（包括Anthropic）迄今为止一直专注于倡导那些保留选择空间、为未来快速反应做好准备、或让世界更好地洞察即将到来的变化的政策行动——比如透明度立法、芯片出口管制以及关于AI对劳动力影响的数据收集。这些还不够，但它们似乎是所有可能做到的事情。</p>
+
+<p class="en">In the last few months, however, the evidence of AI's incredible power, as well as its risks, has become undeniable. Perhaps the most emblematic example is Claude Mythos Preview and the discovery that frontier models pose very real risks to cybersecurity, creating the potential for disruption of the financial sector, critical infrastructure, and national security. Mythos Preview scrambled the global cybersecurity landscape. But its broader significance is that it proves beyond doubt that AI models are now tools of global and national strategic consequence. The cyber risks that Mythos-class models present will not be the last that we must face. I believe that biological risks may soon follow, and that serious AI autonomy risks may not be far behind.</p>
+<p class="cn">然而，在过去几个月里，AI令人难以置信的力量及其风险的证据已经变得不可否认。也许最具代表性的例子是Claude Mythos预览版，以及前沿模型对网络安全构成真实风险的发现——这可能对金融部门、关键基础设施和国家安全造成破坏。Mythos预览版搅动了全球网络安全格局。但其更广泛的意义在于，它毫无疑问地证明了AI模型如今已是具有全球和国家战略意义的工具。Mythos级模型带来的网络风险不会是我们必须面对的最后一种风险。我相信生物风险可能很快就会随之而来，而严重的AI自主性风险可能也不会太远。</p>
+
+<p class="en">We now, globally and collectively, need to activate a slow and rickety policy apparatus to deal with risks and opportunities that are going to compound surprisingly quickly from here. Many policymakers are showing increased openness to taking action, and it's been encouraging to see our peers come around to the same positions we've been advocating for over the past few years. This is good, but I worry that these early actions are at least a year out of step with AI's rapid progress. This essay is an attempt to close that gap: to lay out where the exponential is now, and the collective action needed to meet the moment.</p>
+<p class="cn">我们现在需要在全球范围内、集体性地启动一个缓慢而摇摇欲坠的政策机器，来应对将从现在开始以惊人速度加剧的风险和机遇。许多政策制定者正表现出越来越大的行动意愿，令人鼓舞的是，我们的同行们也开始转向我们过去几年一直倡导的立场。这很好，但我担心这些早期行动至少落后于AI的快速进展一年。本文试图弥合这一差距：阐明指数增长现在处于什么位置，以及我们需要采取什么样的集体行动来应对这一时刻。</p>
+
+<p class="en">I will focus on five perennial policy areas that need re-imagining in an AI world: regulation and public safety, macroeconomics and tax policy, scientific innovation, the balance of power between state and society, and geopolitics. I will speak primarily in terms of US policy since Anthropic is an American company, but most of my recommendations are also relevant to the rest of the world.</p>
+<p class="cn">我将聚焦于五个需要在AI世界中重新构想的长期政策领域：监管与公共安全、宏观经济与税收政策、科学创新、国家与社会之间的权力平衡，以及地缘政治。由于Anthropic是一家美国公司，我将主要从美国政策的角度来讨论，但我的大部分建议也适用于世界其他地区。</p>
+
+<p class="en">Along with this essay, Anthropic is releasing a legislative proposal on frontier model testing and a policy framework for job displacement, for which we intend to provide substantial financial backing. We plan to do much more in the future, but we view these as first steps to signal our seriousness.</p>
+<p class="cn">与本文一同发布的还有Anthropic关于前沿模型测试的立法提案和关于就业替代的政策框架，我们打算为这些提供实质性的财政支持。我们计划未来做更多的事情，但我们认为这些是表明我们认真态度的第一步。</p>
+
+<!-- SECTION 1 -->
+<h2>I. Regulation & Public Safety</h2>
+<p class="cn-heading">第一章 · 监管与公共安全</p>
+
+<p class="en">Every new technology or product has both beneficial and harmful uses, and therefore presents a dilemma between innovation and safety. Regulating products makes them less likely to cause harm and has played an important role in improving lives around the world, but it can also directly reduce their benefits and indirectly disincentivize innovation. There is also the Hayekian point that regulators often lack the information needed to make the right decisions about complicated economic tradeoffs, so that regulation is often both ineffective and burdensome. A related idea is the Collingridge dilemma, which states that the impacts of a technology are often hard to anticipate until it is too late to easily manage them.</p>
+<p class="cn">每种新技术或产品都有有益和有害的用途，因此在创新与安全之间存在着两难抉择。对产品进行监管可以降低其造成伤害的可能性，在改善全球人民生活方面发挥了重要作用，但它也可能直接减少其益处，并间接抑制创新。还有哈耶克式的观点认为，监管机构往往缺乏做出关于复杂经济权衡的正确决策所需的信息，因此监管往往既无效又繁琐。一个相关的概念是科林格里奇困境（Collingridge dilemma），即技术的影响往往难以预见，直到为时已晚、难以轻易管理。</p>
+
+<p class="en">These dynamics loomed large for AI in 2023-2024. It was clear to Anthropic that AI might in the future be capable of producing biological weapons that could threaten millions, or autonomous misbehavior that in extreme cases could even threaten humanity itself. Less clear was the exact form in which the risks would appear, how best to test for them and mitigate them, and how they would play out in practice. There was therefore a high risk that legislation written ahead of time would end up being ineffective — creating pointless or low-value compliance requirements while missing the most crucial sources of actual risk.</p>
+<p class="cn">这些动态在2023-2024年对AI来说显得尤为突出。Anthropic清楚地认识到，AI未来可能能够制造出威胁数百万人的生物武器，或在极端情况下甚至威胁人类本身的自主失控行为。不太清楚的是风险将以何种确切形式出现、如何最好地测试和缓解它们，以及它们在实践中将如何演变。因此，提前制定的立法很有可能最终无效——产生无意义或低价值的合规要求，同时遗漏了最关键的实际风险来源。</p>
+
+<p class="en">Ultimately, we concluded that the right approach at that time was transparency. Developers of AI models should have to disclose their safety procedures and the tests that they run on their models and report on any critical safety incidents, so that the public and the scientific community could gain better visibility into risks as they emerge. When and if risks become more definite and their shape is more clear, then the evidence gained through transparency could be used to design smart legislation to precisely target the most concerning risks. Thus, in 2025, Anthropic supported transparency legislation, helping to pass SB 53 in California, RAISE in NY, SB 315 in Illinois (in early 2026), and advocating for a transparency standard at the federal level.</p>
+<p class="cn">最终，我们得出结论，当时正确的做法是透明度。AI模型的开发者应该被要求披露他们的安全程序和对模型进行的测试，并报告任何关键的安全事件，以便公众和科学界能够随着风险的出现更好地了解它们。当风险变得更加明确、形态更加清晰时，通过透明度获得的证据就可以用来设计精准针对最令人担忧的风险的明智立法。因此，在2025年，Anthropic支持了透明度立法，帮助通过了加利福尼亚州的SB 53、纽约州的RAISE、伊利诺伊州的SB 315（于2026年初），并在联邦层面倡导透明度标准。</p>
+
+<p class="en">However, now the risks are clearly here. It is time to go beyond transparency to more serious and binding regulation of AI. I believe the best analogy, at least at the current stage of the exponential, is to cars, airplanes, or drugs — powerful technologies essential to the modern economy, but capable of killing large numbers of people if designed or operated poorly. I therefore believe we should model AI regulation on agencies like the Federal Aviation Administration (FAA). Frontier AI models, like airplanes, should be required to go through technical testing and auditing, and their release should be blocked or reversed as a threat to public safety if they do not meet high standards of safety.</p>
+<p class="cn">然而，现在风险已经明确来临。是时候超越透明度，走向更严肃和具有约束力的AI监管了。我相信最好的类比——至少在指数增长的当前阶段——是汽车、飞机或药品：这些是对现代经济至关重要的强大技术，但如果设计或操作不当，能够造成大量人员死亡。因此，我认为我们应该以联邦航空管理局（FAA）等机构为模式来构建AI监管。前沿AI模型就像飞机一样，应该被要求经过技术测试和审计，如果它们不符合高安全标准，其发布就应该像对公共安全的威胁一样被阻止或撤销。</p>
+
+<p class="en">I am grateful to see the Trump administration's Executive Order move incrementally towards a greater role for government in AI, though Anthropic's proposal recommends even further action.</p>
+<p class="cn">我很感激看到特朗普政府的行政命令逐步朝着政府在AI中发挥更大作用的方向迈进，尽管Anthropic的提案建议采取更进一步行动。</p>
+
+<p class="en">There may come a time, perhaps relatively soon, when we need to go beyond this, when the most powerful AI systems look less like airplanes or automobiles and more like weaponizable nuclear materials — a threat to humanity rather than "just" a threat to public safety. If that occurs, we may need more aggressive regulatory measures than those I have laid out. But just as it was difficult in 2024 to target and apply the measures I'm suggesting now, I don't think we should get ahead of ourselves. We should design policies for the dangers that are emerging today, while laying the foundations to ramp up our response even more quickly as new dangers appear.</p>
+<p class="cn">也许在不久的将来，我们需要超越这一阶段——当最强大的AI系统看起来不再像飞机或汽车，而更像可武器化的核材料——对人类构成威胁，而"不仅仅"是对公共安全的威胁。如果出现这种情况，我们可能需要比我所述更激进的监管措施。但正如我在2024年难以瞄准和应用我现在建议的措施一样，我认为我们不应操之过急。我们应该为今天正在出现的危险设计政策，同时为随着新危险的出现而更快加速我们的响应奠定基础。</p>
+
+<!-- SECTION 2 -->
+<h2>II. Macroeconomics & Labor</h2>
+<p class="cn-heading">第二章 · 宏观经济与劳动力</p>
+
+<p class="en">Governments have long faced the problem of how to encourage economic growth while also providing important public services and ensuring that the least fortunate are taken care of. An important (and generally correct) premise of these debates has been that economic growth is fragile and difficult to achieve — that while reducing inequality might provide important benefits, it has to be traded off against the economic drag of increased taxes or deficits.</p>
+<p class="cn">长期以来，政府面临着如何在鼓励经济增长的同时提供重要公共服务并确保最弱势群体得到照顾的问题。这些辩论的一个重要（且通常正确的）前提是，经济增长是脆弱且难以实现的——虽然减少不平等可能带来重要益处，但必须与增加税收或赤字带来的经济拖累进行权衡。</p>
+
+<p class="en">I suspect that powerful AI may scramble this assumption. If AI achieves the ability to do most cognitive tasks far better than humans, it stands to reason that it could result in extremely rapid and robust economic growth via the acceleration of science, technology, and operational efficiency. The iterative ability of AI to build even better AI may supercharge that growth even further. But for exactly the same reasons, AI may also act as a more general economic substitute for human cognitive abilities than previous technologies have, while also altering the economy far faster than previous technologies have. Thus, it's reasonable to think that AI could produce much larger disruptions to the labor market than previous technologies, and, potentially, more enduring disruptions. We risk ending up in a world where the economic tradeoff dial is stuck on the hypergrowth, hyper-inequality setting, and is potentially very hard to unstick from that setting. The key challenge in such a world won't be incentivizing growth, but finding a way for everyone to share in the benefits.</p>
+<p class="cn">我怀疑强大的AI可能会颠覆这一假设。如果AI能够比人类更好地完成大多数认知任务，那么它通过加速科学、技术和运营效率，理应能够带来极其快速和强劲的经济增长。AI迭代构建更优秀AI的能力可能进一步增压这种增长。但出于完全相同的原因，AI也可能比以往的技术更广泛地替代人类的认知能力，同时比以往的技术更快地改变经济。因此，有理由认为AI可能对劳动力市场造成比以往技术更大的破坏，并且可能是更持久的破坏。我们面临的风险是，最终陷入一个经济权衡的旋钮被卡在"超高速增长、极端不平等"档位的世界，而且可能非常难以从这一档位脱开。在这样的世界里，关键挑战不是如何激励增长，而是找到一种让每个人都能分享利益的方式。</p>
+
+<p class="en">Of the topics discussed in this essay, macroeconomics and enduring labor displacement are arguably the ones that have attracted the most public attention and the most misunderstanding, so I want to be extremely clear on two points.</p>
+<p class="cn">在本文讨论的所有话题中，宏观经济和持久性劳动力替代可以说是吸引了最多公众关注和最多误解的话题，所以我想在两点上非常明确。</p>
+
+<p class="en">First, enduring job displacement is undesirable and dangerous, and we should do everything we can to minimize or prevent it, not to bring it about. I have warned about job displacement in interviews and essays because I want both policymakers and the private sector to have the best chance to adapt and respond, not because I am trying to be a "prophet of doom". As a company, Anthropic always does as much as it can to work with customers to find creative new use cases and new sources of revenue that allow them to do more with their existing workforce, rather than focusing solely on cost savings (which often means reducing the workforce). More broadly, it is valuable for the whole world to experiment with using AI in as many new ways as possible, as that is the way for society to discover new possible job configurations. I do think AI will enable a number of new economic opportunities. I've predicted that AI will enable single individuals to create billion-dollar companies, and we're already seeing teams of only a few people build businesses with hundreds of millions in revenue. But at the same time we should recognize that there's a decent possibility that, despite all our efforts, AI still causes significant enduring job loss — and that this may be an intrinsic property of the technology and the way it broadly replicates human cognition.</p>
+<p class="cn">第一，持久性就业替代是不受欢迎且危险的，我们应该尽一切努力将其最小化或防止它，而不是促成它。我在采访和文章中警告就业替代，是因为我希望政策制定者和私营部门都有最好的机会来适应和回应，而不是因为我想成为"末日预言家"。作为一家公司，Anthropic始终尽最大努力与客户合作，寻找创造性的新用例和新收入来源，使他们能够用现有员工做更多事情，而不是仅仅专注于成本节约（这通常意味着减少员工）。更广泛地说，全世界都值得尝试以尽可能多的新方式使用AI，因为这是社会发现新的可能就业配置的途径。我确实认为AI将创造许多新的经济机会。我曾预测AI将使个人能够创建价值十亿美元的公司，而我们已经看到只有几个人的团队建立了收入数亿美元的企业。但同时我们应该认识到，尽管我们付出了所有努力，AI仍然很有可能造成显著的持久性就业损失——这可能是该技术及其广泛复制人类认知的方式的内在属性。</p>
+
+<p class="en">Second, any response to AI-driven job displacement needs to address both the need to provide for everyone economically, and the need for people to find meaning, purpose, and agency. The latter is ultimately more important, and it depends on deep questions about how society is organized, what people should strive for, and what constitutes the good life. I am actually very optimistic that, even in a world with AIs that are better than everyone at everything, humans can live lives of deep purpose and strive to build awe-inspiring and beautiful things. But this is something to be collectively worked out by society as a whole, not something policy can directly address. Policy can be most helpful in buying us time to do that work, by slowing down job loss and providing economically for those likely to be affected.</p>
+<p class="cn">第二，任何应对AI驱动的就业替代的措施，都需要同时解决为每个人提供经济保障的需求，以及人们找到意义、目标和自主性的需求。后者最终更为重要，它取决于关于社会如何组织、人们应该追求什么以及什么构成美好生活的深层问题。我实际上非常乐观地认为，即使在AI在一切领域都比任何人都更擅长的世界里，人类也可以过上有深刻目标的生活，努力建造令人敬畏和美丽的事物。但这需要由整个社会共同探索，而不是政策可以直接解决的。政策最大的帮助在于为我们争取时间来做这项工作——通过减缓就业损失，为可能受影响的人提供经济支持。</p>
+
+<p class="en">In that spirit, some key policy interventions that are likely to be helpful include: better measurement and tracking of AI's employment impacts; pro-employment incentives such as wage insurance, retention tax credits, and retraining grants; and long-term income support, potentially including Universal Basic Income.</p>
+<p class="cn">本着这一精神，一些可能有益的关键政策干预包括：更好地衡量和追踪AI对就业的影响；支持就业的激励措施，如工资保险、保留税收抵免和再培训补助金；以及长期的收入支持，可能包括全民基本收入。</p>
+
+<p class="en">A common focus of economic concern about AI that I haven't mentioned has been datacenters and particularly their potential to raise energy prices. My view is that AI companies should pay to absorb rate increases — and Anthropic has already made a pledge to do so — but I see public hostility to datacenters as largely a symbol or outlet for broader economic anxieties about AI. It is important we have a direct societal conversation about these wider economic issues and truly have compelling solutions for them, or else they are likely to manifest indirectly, as they have with datacenters.</p>
+<p class="cn">我没有提及的一个常见经济担忧焦点是数据中心，特别是它们可能提高能源价格的潜力。我的观点是，AI公司应该承担费率上涨的费用——Anthropic已经做出了这样的承诺——但我认为公众对数据中心的敌意在很大程度上是对AI更广泛经济焦虑的象征或宣泄口。重要的是，我们要就这些更广泛的经济问题进行直接的社会对话，并真正拿出令人信服的解决方案，否则它们很可能以间接的方式表现出来，就像对数据中心的抵制一样。</p>
+
+<!-- SECTION 3 -->
+<h2>III. Accelerating Science & Biomedicine</h2>
+<p class="cn-heading">第三章 · 加速科学与生物医学</p>
+
+<p class="en">Just as we must grapple with the balance between innovation and safety for AI itself, we must grapple with the same balance for technologies that are likely to be accelerated by AI, such as biomedicine, energy, or materials science. But while AI itself is likely to present novel challenges that emerge very quickly and that we have no prior experience in handling, other fields accelerated by AI are likely to encounter a very different problem: regulatory systems that were designed for a slower pace of innovation and are not prepared to handle the deluge of new products and advances that AI will bring. AI may also make these downstream technologies safer and more predictable in a way that violates the skeptical assumptions of regulatory agencies like the Food and Drug Administration (FDA).</p>
+<p class="cn">正如我们必须努力平衡AI本身的创新与安全一样，我们也必须为那些可能被AI加速的技术——如生物医学、能源或材料科学——努力实现同样的平衡。但是，虽然AI本身可能带来全新的、快速出现的、我们没有处理经验的挑战，被AI加速的其他领域可能遇到一个非常不同的问题：为较慢创新步伐而设计的监管体系，没有准备好应对AI将带来的大量新产品和进步。AI还可能使这些下游技术更安全、更可预测，而这恰恰违背了食品和药物管理局（FDA）等监管机构的怀疑性假设。</p>
+
+<p class="en">Thus, for downstream applications of AI — in contrast to AI itself — I am more worried about the regulatory apparatus slowing down progress (because it can't handle the increased pace of change) than I am about it failing to address important risks. The last thing we want is for the benefits of AI to be slowed while its risks loom large, so it's important to take action on this problem as soon as possible.</p>
+<p class="cn">因此，对于AI的下游应用——与AI本身相反——我更担心监管机器会拖慢进步（因为它无法应对加速的变化步伐），而不是它未能应对重要风险。我们最不希望看到的是，AI的益处被拖延而其风险却日益凸显，因此尽快对这一问题采取行动至关重要。</p>
+
+<p class="en">The problem and its solutions will manifest differently in each area of science, commerce, and technology, so I'll focus on one illustrative area: biomedical innovation. This is both because it will likely be the source of AI's biggest humanitarian benefits and because it is an area where regulation is especially complex. We don't know exactly how AI will accelerate biomedical innovation, but it seems likely to: accelerate drug discovery through AI-driven protein design and molecular simulation; improve preclinical testing via better predictive models; and optimize clinical trial design and patient selection.</p>
+<p class="cn">这个问题及其解决方案在每个科学、商业和技术领域的表现各不相同，所以我将聚焦于一个说明性领域：生物医学创新。这不仅因为它很可能是AI最大人道主义益处的来源，也因为这是一个监管特别复杂的领域。我们不完全知道AI将如何加速生物医学创新，但它似乎可能：通过AI驱动的蛋白质设计和分子模拟加速药物发现；通过更好的预测模型改进临床前测试；以及优化临床试验设计和患者选择。</p>
+
+<p class="en">Some of these advances will naturally accelerate regulatory timelines without need for structural change. Drugs with larger effect sizes can lead to smaller, less expensive clinical trials, and activate mechanisms for accelerated approval. But the regulatory system is currently designed to apply a high level of scrutiny and many stages of testing, under the assumption that drug candidates often don't work and often have serious safety problems even when they do. With both the FDA and the European Medicines Agency (EMA), the typical time for a drug candidate to pass through the regulatory pipeline is 7-8 years, in part due to these pessimistic assumptions. Without reforms, AI will simply jam or overload this system.</p>
+<p class="cn">其中一些进展将自然加速监管时间表，无需结构性变革。效果更大的药物可以促成更小、更便宜的临床试验，并激活加速批准的机制。但目前的监管体系被设计为施加高度审查和多个阶段的测试，其假设是药物候选通常不起作用，即使起作用也常常有严重的安全问题。在FDA和欧洲药品管理局（EMA），一个药物候选通过监管管道的典型时间是7-8年，部分原因在于这些悲观的假设。如果不进行改革，AI将直接堵塞或过载这个系统。</p>
+
+<p class="en">Obviously, we don't want to change things in a way that leads to a crop of snake-oil drugs or widespread safety incidents. But some relatively simple reforms could make the FDA, EMA, and similar agencies more adaptable to a rapid AI-driven scientific acceleration if one were to occur. Many of the steps in the clinical process that previously required expensive and slow experiments may soon be done via AI simulation or analysis. Regulatory agencies should consider developing standards now for what it would take to accept such methods. This would mean they can be adopted quickly once they work, rather than there being an extended period during which unnecessary tests continue to be required. Areas where this could apply include: AI-based PK/PD modeling, AI toxicology prediction to reduce animal testing, and synthetic control arms in clinical trials.</p>
+<p class="cn">显然，我们不希望以导致大量假药或广泛安全事故的方式改变现状。但一些相对简单的改革可以使FDA、EMA和类似机构更能适应AI驱动的科学加速——如果真的发生的话。临床过程中许多以前需要昂贵和缓慢实验的步骤，可能很快就可以通过AI模拟或分析来完成。监管机构应该考虑现在就制定接受此类方法所需的标准。这意味着一旦它们有效就可以迅速被采用，而不是在很长一段时间内继续要求不必要的测试。这可能适用的领域包括：基于AI的药代动力学/药效学（PK/PD）建模、AI毒理学预测以减少动物实验，以及临床试验中的合成对照组。</p>
+
+<p class="en">Beyond these specific examples, agencies should also consider more radical and flexible mechanisms for accelerated approval. If my predictions about AI are correct, there will soon be many instances of interventions that work really well out of the blue, and the regulatory system should be prepared to take them seriously and not adopt a posture of excessive skepticism. Biomedical acceleration should substantially increase AI's benefits, but it's worth noting that it may also help to reduce AI's risks. Reforming biomedical approvals may help with biodefense, and AI-driven biomedical progress may also improve mental health, which could have a stabilizing effect on society.</p>
+<p class="cn">除了这些具体例子之外，各机构还应考虑更激进和灵活的加速审批机制。如果我对AI的预测是正确的，很快就会有大量突然出现、效果极佳的干预措施，监管体系应该准备好认真对待它们，而不是采取过度怀疑的姿态。生物医学的加速应该大大增加AI的益处，但值得注意的是，它也可能有助于减少AI的风险。改革生物医学审批可能有助于生物防御，而AI驱动的生物医学进步也可能改善心理健康，对社会产生稳定作用。</p>
+
+<!-- SECTION 4 -->
+<h2>IV. Civil Liberties & State Power</h2>
+<p class="cn-heading">第四章 · 公民自由与国家权力</p>
+
+<p class="en">Every system of government has to confront the question of the state's power and its limits. The state has a legitimate, often existential, interest in protecting its population from internal and external threats. But granting it too much power is the road to tyranny. Modern democracies have largely managed this balance successfully, but it is an uneasy one at the best of times. Enforcing it has required a great deal of legal and constitutional machinery built up over centuries — for example in the United States the First, Fourth, and Fifth amendments, the Posse Comitatus Act, FISA, and so on.</p>
+<p class="cn">每个政府体系都必须面对国家权力及其限制的问题。国家在保护其人民免受内外威胁方面拥有合法的、往往是生存性的利益。但赋予它过多权力则是通向暴政之路。现代民主国家在很大程度上成功地管理了这一平衡，但即使是最好的时期，这也是一种不安的平衡。执行这一平衡需要几个世纪建立起来的大量法律和宪法机制——例如在美国，第一、第四和第五修正案，《军事力量使用法》（Posse Comitatus Act）、《外国情报监视法》（FISA）等等。</p>
+
+<p class="en">AI threatens to upset this balance while also dramatically raising its stakes. But if we react quickly and meet the moment, we can use AI to create a world that has more robust and durable guarantees of liberty and better defense against threats, than we have ever had before.</p>
+<p class="cn">AI有可能打破这一平衡，同时大幅提高其赌注。但如果我们迅速反应、迎接挑战，我们可以利用AI创造一个比以往任何时候都更强大、更持久的自由保障和更好防御威胁的世界。</p>
+
+<p class="en">Powerful AI in the wrong hands could be the ultimate tool of autocracy, and our existing legal and constitutional protections are not fully equipped to counter this threat. Fundamentally, the enormous returns to intelligence in terms of power in the world, combined with the rapid pace of AI's progress, creates a perfect storm for a surprise seizure of power by a range of dangerous actors.</p>
+<p class="cn">强大AI落入错误之手可能成为专制的终极工具，而我们现有的法律和宪法保护并不完全具备应对这一威胁的能力。从根本上说，智能在世界权力方面的巨大回报，加上AI进展的快速步伐，为各种危险行为者突然夺取权力创造了完美风暴。</p>
+
+<p class="en">The danger could take a variety of specific technological or operational forms, but what they all have in common is the idea that AI could suddenly confer enormous power while routing around existing mechanisms of democratic oversight. A fully automated drone army that sounds like science fiction today could, in the future, obey unlawful orders and allow governments to unilaterally entrench their power; professionally-trained humans are more likely to object to such illegal direction. A surveillance-focused AI could analyze widely available information at massive scale and use it to infer the innermost details of every citizen's life — a technological ability not contemplated by current civil liberties law. All of this could happen very quickly, or in secret, so it is important to proactively fortify democracies' commitment to freedom and civil liberties.</p>
+<p class="cn">危险可能以各种具体的技术或操作形式出现，但它们的共同点是：AI可能突然赋予巨大的权力，同时绕过现有的民主监督机制。今天听起来像科幻小说的全自动无人机军队，未来可能服从非法命令，让政府单方面巩固权力；受过专业训练的人类更有可能反对这种非法指令。以监控为重点的AI可以大规模分析广泛可用的信息，并利用它推断每个公民生活的最私密细节——这种技术能力是当前公民自由法所未能预见的。所有这些都可能在非常短的时间内或秘密发生，因此积极主动地加强民主国家对自由和公民自由的承诺至关重要。</p>
+
+<p class="en">Some key policy ideas we should consider include: banning fully autonomous weapons domestically; closing data-broker loopholes that enable mass surveillance; requiring autonomous systems to comply with court orders and due process; and giving citizens access to AI legal assistance when facing state action.</p>
+<p class="cn">我们应该考虑的一些关键政策思路包括：在国内禁止完全自主的武器；堵住使大规模监控成为可能的数据经纪人漏洞；要求自主系统服从法院命令和正当程序；以及在公民面对国家行动时给予他们获得AI法律援助的机会。</p>
+
+<p class="en">Finally, it is worth noting that governments are not the only entities that we should beware of when it comes to AI-driven seizure of power. At various times in history (such as the Gilded Age in the United States or the East India Company in the UK), companies have become powerful enough that they capture the state or adopt quasi-state characteristics. AI will soon become so capable that I worry it cannot safely be fully entrusted to either governments or companies, and there must be checks and balances on each. Regulation is one answer on how to rein in companies, but it's also important that AI companies have more separation of power and accountability than is typical for private entities. Anthropic's Long-Term Benefit Trust (an independent governance body designed to hold the company to its mission) is one such structure, and the industry should continue to explore mechanisms that go further. Getting the balance right — so that both companies and the government have meaningful checks on their powers — is essential.</p>
+<p class="cn">最后，值得注意的是，政府并不是我们在AI驱动的权力攫取方面唯一需要警惕的实体。在历史上的不同时期（如美国的镀金时代或英国的东印度公司），公司已经变得足够强大，以至于它们捕获了国家或具有准国家特征。AI很快就会变得如此强大，以至于我担心它不能安全地完全托付给政府或公司，必须对两者都有制衡。监管是约束公司的一种答案，但同样重要的是，AI公司拥有比一般私营实体更多的权力分立和问责制。Anthropic的长期利益信托（一个独立的治理机构，旨在使公司坚守其使命）就是这样一种结构，行业应继续探索更进一步的机制。找到正确的平衡——使公司和政府都有对其权力的有意义的制约——至关重要。</p>
+
+<!-- SECTION 5 -->
+<h2>V. International Geopolitics</h2>
+<p class="cn-heading">第五章 · 国际地缘政治</p>
+
+<p class="en">It has become a common instinct, perhaps developed from recent experience with the internet and telecommunications, to regard new technologies geopolitically as instruments of trade policy, with the aim being to "diffuse our technology stack around the world". But it is my very strong belief that AI is something much more profound, something that resets the whole game board and around which all future geopolitical strategy must be shaped — like nuclear weapons, but potentially even more so.</p>
+<p class="cn">近年来，也许是从互联网和电信的最近经验中发展出来的一种普遍本能，是将新技术在地缘政治上视为贸易政策的工具，其目的是"将我们的技术栈推广到世界各地"。但我坚信，AI是某种更为深刻的东西，是某种重置整个棋盘的东西，所有未来的地缘政治战略都必须围绕它来构建——就像核武器一样，但可能影响更为深远。</p>
+
+<p class="en">If AI really will soon be "a country of geniuses in a datacenter", or anything remotely close to it, then AI is likely to be the dominant source of military and economic power for any nation. In a virtual country of 100 million geniuses, 10 million could be applied to military strategy, 10 million to drone manufacture, 10 million to weapons R&D, 10 million to intelligence collection and analysis, 10 million to general scientific advancement, and so on. A nation that possesses powerful AI facing one without it — or even facing one that is behind in AI by 3 years — could be the equivalent of an army of World War II Marines facing an army of medieval swordsmen.</p>
+<p class="cn">如果AI真的很快就将成为"数据中心里的天才之国"，或任何接近于此的东西，那么AI很可能成为任何国家军事和经济力量的主导来源。在一个拥有1亿天才的虚拟国家中，1000万可以用于军事战略，1000万用于无人机制造，1000万用于武器研发，1000万用于情报收集和分析，1000万用于一般科学进步，等等。一个拥有强大AI的国家面对一个没有AI的国家——甚至面对一个AI落后3年的国家——可能相当于一支二战海军陆战队面对一支中世纪剑士军队。</p>
+
+<p class="en">In addition, if powerful AI enables deeper and potentially permanent forms of autocratic repression (see Section 4), this makes it all the more important that the world's most powerful nations are democracies — or at least that strong protections exist against AI-driven repression. It also increases the urgency of a focused geopolitical strategy.</p>
+<p class="cn">此外，如果强大的AI使更深层次、可能是永久性的专制镇压成为可能（见第四章），这就使得世界上最强大的国家是民主国家——或至少存在针对AI驱动镇压的强大保护——变得更加重要。这也增加了制定聚焦的地缘政治战略的紧迫性。</p>
+
+<p class="en">Democracies should seek to form a global coalition centered on building AI according to their common values, iteratively trying to draw in the rest of the world by making it more and more attractive to be part of the coalition and less and less attractive to be outside it. The coalition should be a coordinated internationalization of the AI policy ideas discussed in Sections 1 through 4, plus an effort to lock down the supply chain critical to building AI by sharing it within the coalition and denying it to those outside it.</p>
+<p class="cn">民主国家应寻求形成一个全球联盟，以按照其共同价值观构建AI为核心，通过使加入联盟越来越有吸引力、留在联盟外越来越没有吸引力，逐步吸引世界其他国家加入。该联盟应是第一至第四章讨论的AI政策理念的协调国际化，再加上通过联盟内共享、联盟外封锁的方式来锁定对构建AI至关重要的供应链。</p>
+
+<p class="en">The goal should be to make membership in the coalition as attractive as possible — and the costs of remaining outside it clear. The coalition would rest on coordination among sovereign states, with each nation retaining full authority over its own affairs. It could grow iteratively, starting with ideologically aligned democracies (which will be naturally amenable to joining) and progressively welcoming countries that are less naturally aligned but prepared to meet the coalition's standards in exchange for the enormous benefits of membership. Ideally, the entire world would eventually join. But even if that isn't possible, building the coalition puts democracies in the strongest position to contain and outcompete the regimes that remain committed to repression.</p>
+<p class="cn">目标应该是使加入联盟尽可能有吸引力——同时使留在联盟外的代价清晰明确。联盟将建立在主权国家之间的协调之上，每个国家保留对其自身事务的完全权力。它可以逐步增长，从意识形态一致的民主国家开始（它们自然愿意加入），逐步欢迎那些虽然不那么自然一致但准备满足联盟标准的国家，以换取成员资格的巨大利益。理想情况下，整个世界最终都会加入。但即使这不可能实现，构建联盟也能使民主国家处于最有利的位置，以遏制和超越那些仍致力于压迫的政权。</p>
+
+<!-- CONCLUSION -->
+<h2>Conclusion</h2>
+<p class="cn-heading">结论</p>
+
+<p class="en">AI's exponential progress has created an urgency and a pace of change that the policymaking process is ordinarily ill-equipped to handle. But it has also created a unique window of opportunity. The confluence of clear and present evidence of AI's risks, an early taste of AI's potential for both economic value creation and economic disruption, and a remarkable public backlash against unregulated approaches to AI have created a situation where policymakers are unusually open to forward-looking actions. Treebeard and his forest are waking up.</p>
+<p class="cn">AI的指数级进展创造了一种政策制定过程通常无法应对的紧迫性和变化速度。但它也创造了一个独特的机会窗口。AI风险的明确而现实的证据、对AI经济价值创造和经济破坏潜力的初步体验，以及公众对不受监管的AI方式的显著反弹，这些因素汇聚在一起，创造了一个政策制定者异常开放于前瞻性行动的局面。树胡和他的森林正在苏醒。</p>
+
+<p class="en">It's become popular in AI industry circles to view this as a PR problem: to say that AI needs "better marketing". I reject this framing completely. People are worried about AI because they correctly perceive that its risks are real, not because AI CEOs have been insufficiently Panglossian. I believe it is my duty as an AI leader to continue to be transparent about these risks, and public concern in response to this transparency constitutes democratic accountability working as it should. The key challenge is focusing this concern into constructive solutions and not allowing it to descend into formless anger and violence.</p>
+<p class="cn">在AI行业圈子里，流行将这一切视为公关问题：说AI需要"更好的营销"。我完全拒绝这种框架。人们担心AI是因为他们正确地认识到其风险是真实的，而不是因为AI公司的CEO们不够盲目乐观。我相信作为一名AI领导者，我的责任是继续对这些风险保持透明，而公众对这种透明度的回应所引发的关切，恰恰构成了民主问责制应有的运作方式。关键的挑战是将这种关切聚焦到建设性的解决方案上，而不是让它沦为无序的愤怒和暴力。</p>
+
+<p class="en">I am optimistic about finding solutions because many of these issues — from addressing job displacement, to pre-release testing of models, to export controls on chips, to other AI related policy issues such as energy use — have a common-sense appeal across the political spectrum. There is an aspirational but realistic future world in which a broad nonpartisan coalition, driven by direct recognition of the challenges posed by AI, leads to sane and forward-looking policies being adopted much faster than usual. The sooner we do this, the sooner we can all share in AI's incredible benefits.</p>
+<p class="cn">我对找到解决方案感到乐观，因为这些问题中的许多——从应对就业替代，到模型的发布前测试，到芯片出口管制，再到能源使用等其他AI相关政策问题——在政治光谱的各个方向上都具有常识性的吸引力。存在一个既有抱负又现实的未来世界，在这个世界里，一个由直接认识到AI带来的挑战所驱动的广泛两党联盟，将导致理性和前瞻性的政策比往常更快地获得通过。我们越早做到这一点，我们大家就越早能够共享AI的不可思议的益处。</p>
+
+<p class="en">I would like to thank Allan Dafoe, Mariano-Florentino Cuéllar, Richard Fontaine, Buddy Shah, Vas Narasimhan, Matt Yglesias, Nick Beckstead, Jason Matheny, Brad Carson and many of the staff at Anthropic for their comments and feedback on drafts of this essay.</p>
+<p class="cn">我要感谢Allan Dafoe、Mariano-Florentino Cuéllar、Richard Fontaine、Buddy Shah、Vas Narasimhan、Matt Yglesias、Nick Beckstead、Jason Matheny、Brad Carson以及Anthropic的许多员工对本文草稿的评论和反馈。</p>
+
+<!-- FOOTNOTES -->
+<div class="footnotes">
+<h2>Notes</h2>
+<ol>
+<li>These risk categories — cybersecurity, biological, and autonomy — align with the testing framework in Anthropic's legislative proposal.</li>
+<li>This is an instance of the Collingridge dilemma applied specifically to AI safety legislation.</li>
+<li>This escalation — from FAA-style to nuclear-material-style regulation — tracks the trajectory of the AI exponential itself.</li>
+<li>This point addresses a common misunderstanding: acknowledging the risk of job displacement is not the same as advocating for it.</li>
+<li>For a fuller treatment of this theme, see Amodei's earlier essay "Machines of Loving Grace" (2024).</li>
+<li>These proposals are detailed in Anthropic's accompanying Economic Futures policy framework.</li>
+<li>This argument parallels concerns raised by national security experts about AI-enabled authoritarianism.</li>
+</ol>
+</div>
+
+</article>
+
+<script>
+(function() {
+  const html = document.documentElement;
+  const btnLight = document.getElementById('btn-light');
+  const btnDark = document.getElementById('btn-dark');
+
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('ai-essay-theme', theme);
+    btnLight.classList.toggle('active', theme === 'light');
+    btnDark.classList.toggle('active', theme === 'dark');
+  }
+
+  var saved = localStorage.getItem('ai-essay-theme');
+  if (!saved) {
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    saved = prefersDark ? 'dark' : 'light';
+  }
+  setTheme(saved);
+
+  btnLight.addEventListener('click', function() { setTheme('light'); });
+  btnDark.addEventListener('click', function() { setTheme('dark'); });
+
+  // Reading progress bar
+  var bar = document.getElementById('progress-bar');
+  function updateProgress() {
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      bar.style.width = (scrollTop / docHeight * 100) + '%';
+    }
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+</script>
+
+</body>
+</html>
