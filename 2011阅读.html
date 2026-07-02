@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2011 考研英语（一）Text 1 —— 纽约爱乐乐团换帅</title>
+<title>2011 考研英语（一）阅读精析</title>
 <style>
   :root {
     --bg: #fdfbf7;
@@ -11,76 +11,122 @@
     --text: #2c2c2c;
     --sub: #6b6b6b;
     --accent: #b85c3a;
+    --accent2: #3a6b5a;
     --tag-bg: #fef0e8;
+    --tag-bg2: #eaf5f0;
     --border: #e8e0d5;
-    --code-bg: #faf8f5;
     --syno: #5a7d5a;
     --anto: #a05252;
     --sent-bg: #fcf9f4;
+    --bar-bg: rgba(253,251,247,.94);
+    --h2-color: #5c3d2e;
+    --h3-color: #6b4a3a;
+    --word-color: #3a2a1a;
+    --trans-color: #444;
+    --summary-color: #5c3d2e;
+    --tab-active-bg: #fff;
+  }
+  body.dark {
+    --bg: #1e1e1e;
+    --card: #2a2a2a;
+    --text: #d4d4d4;
+    --sub: #a0a0a0;
+    --accent: #e0936a;
+    --accent2: #6ab89a;
+    --tag-bg: #3a2a1e;
+    --tag-bg2: #1e3a2e;
+    --border: #3a3a3a;
+    --syno: #7ab87a;
+    --anto: #c07070;
+    --sent-bg: #252525;
+    --bar-bg: rgba(30,30,30,.94);
+    --h2-color: #d4a88c;
+    --h3-color: #c0a090;
+    --word-color: #d0c0b0;
+    --trans-color: #b0b0b0;
+    --summary-color: #d4a88c;
+    --tab-active-bg: #2a2a2a;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "Songti SC", "SimSun", "PMingLiU", Georgia, serif;
+    font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "Songti SC", "SimSun", Georgia, serif;
     background: var(--bg);
     color: var(--text);
     line-height: 2;
-    padding: 2rem 1.5rem;
+    transition: background .35s, color .35s;
   }
-  .container { max-width: 780px; margin: 0 auto; }
+
+  /* ====== 悬浮控件栏 ====== */
+  #sticky-bar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bar-bg); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: .4rem 1rem; margin-bottom: 2rem;
+    transition: background .35s, border .35s;
+  }
+  #tab-group { display: flex; gap: .3rem; }
+  #tab-group button {
+    font-family: inherit; font-size: .9rem; font-weight: 700;
+    padding: .4rem 1.2rem; border: 1px solid var(--border);
+    border-radius: 6px; cursor: pointer;
+    background: transparent; color: var(--text);
+    transition: all .2s;
+  }
+  #tab-group button.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  #tab-group button:hover:not(.active) {
+    background: var(--tag-bg); border-color: var(--accent);
+  }
+  #dark-btn {
+    font-family: inherit; font-size: .85rem; font-weight: 700;
+    padding: .35rem 1rem; border: 1px solid var(--border);
+    border-radius: 20px; cursor: pointer;
+    background: transparent; color: var(--text);
+    transition: all .2s; white-space: nowrap;
+  }
+  #dark-btn:hover { background: var(--tag-bg); border-color: var(--accent); }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 2rem; }
 
   /* 标题 */
   h1 {
-    text-align: center; font-size: 1.7rem; font-weight: 700;
-    letter-spacing: .06em; padding-bottom: .6rem; border-bottom: 2px solid var(--accent);
-    margin-bottom: 2rem;
+    text-align: center; font-size: 1.6rem; font-weight: 700;
+    letter-spacing: .06em; padding-bottom: .5rem; border-bottom: 2px solid var(--accent);
+    margin-bottom: 1.8rem;
   }
   h2 {
-    font-size: 1.15rem; font-weight: 700; margin: 2.4rem 0 1rem;
+    font-size: 1.15rem; font-weight: 700; margin: 2.2rem 0 .9rem;
     padding-left: .6rem; border-left: 4px solid var(--accent);
-    color: #5c3d2e;
+    color: var(--h2-color);
   }
   h3 {
     font-size: .95rem; font-weight: 700; margin: 1.2rem 0 .5rem;
-    color: #6b4a3a;
+    color: var(--h3-color);
   }
-
-  /* 原文段落 */
   .passage p {
-    text-indent: 2em; margin-bottom: .8rem; font-size: 1.02rem;
-    text-align: justify;
+    text-indent: 2em; margin-bottom: .8rem; font-size: 1.02rem; text-align: justify;
   }
-  .passage sup.para-num {
-    font-size: .7rem; color: var(--accent); font-weight: 700;
-    margin-right: .3em; vertical-align: super;
-  }
-
-  /* 分割线 */
   hr { border: none; border-top: 1px dashed var(--border); margin: 2.5rem 0; }
 
-  /* 词汇卡片 */
+  /* 词汇 */
   .vocab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
   @media (max-width: 600px) { .vocab-grid { grid-template-columns: 1fr; } }
   .vocab-item {
     background: var(--card); border: 1px solid var(--border);
-    border-radius: 6px; padding: .6rem .8rem;
+    border-radius: 6px; padding: .6rem .8rem; transition: background .35s, border .35s;
   }
-  .vocab-item .word {
-    font-weight: 700; font-size: 1rem; color: #3a2a1a;
-  }
-  .vocab-item .pos {
-    font-size: .72rem; color: #999; margin-left: .4em; font-style: italic;
-  }
+  .vocab-item .word { font-weight: 700; font-size: 1rem; color: var(--word-color); }
+  .vocab-item .pos { font-size: .72rem; color: #999; margin-left: .4em; font-style: italic; }
   .vocab-item .meaning { font-size: .85rem; color: var(--text); margin-top: .15rem; }
   .vocab-item .syn { font-size: .75rem; color: var(--syno); margin-top: .1rem; }
   .vocab-item .anto { font-size: .75rem; color: var(--anto); }
 
   /* 短语 */
   .phrase-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
-  .phrase-table td {
-    padding: .45rem .6rem; border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  .phrase-table td:first-child { font-weight: 700; white-space: nowrap; width: 28%; color: #3a2a1a; }
+  .phrase-table td { padding: .45rem .6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .phrase-table td:first-child { font-weight: 700; white-space: nowrap; width: 28%; color: var(--word-color); }
   .phrase-table td:nth-child(2) { color: var(--sub); width: 32%; }
   .phrase-table td:last-child { font-size: .83rem; }
 
@@ -88,145 +134,75 @@
   .sent-block {
     background: var(--sent-bg); border: 1px solid var(--border);
     border-radius: 6px; padding: .8rem 1rem; margin-bottom: 1.2rem;
+    transition: background .35s, border .35s;
   }
-  .sent-block .en {
-    font-size: .95rem; font-style: italic; color: #3a2a1a;
-    margin-bottom: .5rem; line-height: 1.8;
-  }
+  .sent-block .en { font-size: .95rem; font-style: italic; color: var(--word-color); margin-bottom: .5rem; line-height: 1.8; }
   .sent-block .analysis { font-size: .84rem; color: var(--sub); line-height: 1.85; }
   .sent-block .analysis b { color: var(--accent); font-weight: 700; }
-  .sent-block .analysis em { color: #5a7d5a; font-style: normal; }
+  .sent-block .analysis em { color: var(--syno); font-style: normal; }
 
   /* 译文 */
-  .trans p { text-indent: 2em; margin-bottom: .6rem; font-size: .93rem; text-align: justify; color: #444; }
+  .trans p { text-indent: 2em; margin-bottom: .6rem; font-size: .93rem; text-align: justify; color: var(--trans-color); }
 
   /* 总结 */
   .summary-box {
     background: var(--tag-bg); border-radius: 8px; padding: .9rem 1.2rem;
-    font-size: .91rem; color: #5c3d2e; margin-top: .6rem;
+    font-size: .91rem; color: var(--summary-color); margin-top: .6rem; transition: background .35s;
   }
-
-  /* 标签 */
   .tag {
-    display: inline-block; background: var(--tag-bg); color: #b85c3a;
+    display: inline-block; background: var(--tag-bg); color: var(--accent);
     border-radius: 3px; padding: .05em .45em; font-size: .7rem; margin-right: .3em;
   }
+
+  /* 文章区切换 */
+  .article-panel { display: none; }
+  .article-panel.active { display: block; }
 </style>
 </head>
 <body>
+
+<!-- ====== 悬浮控件栏 ====== -->
+<div id="sticky-bar">
+  <div id="tab-group">
+    <button class="active" data-target="text1">Text 1 &mdash; 纽约爱乐换帅</button>
+    <button data-target="text2">Text 2 &mdash; 高管裸辞</button>
+  </div>
+  <button id="dark-btn">🌙 暗色模式</button>
+</div>
+
 <div class="container">
 
-<h1>2011 年考研英语（一）<br>Text 1 &mdash; 纽约爱乐乐团换帅风波</h1>
+<!-- ==================== TEXT 1 ==================== -->
+<div class="article-panel active" id="text1">
 
-<!-- ====== 1. 原文 ====== -->
+<h1>Text 1 &mdash; 纽约爱乐乐团换帅风波</h1>
+
 <h2>一、原文</h2>
 <div class="passage">
-<p>
-  The decision of the New York Philharmonic to hire Alan Gilbert as its next music director has been the talk of the classical-music world ever since the sudden announcement of his appointment in 2009. For the most part, the response has been favorable, to say the least. "Hooray! At last!" wrote Anthony Tommasini, a sober-sided classical-music critic.
-</p>
-<p>
-  One of the reasons why the appointment came as such a surprise, however, is that Gilbert is comparatively little known. Even Tommasini, who had advocated Gilbert's appointment in the <i>Times</i>, calls him "an unpretentious musician with no air of the formidable conductor about him." As a description of the next music director of an orchestra that has hitherto been led by musicians like Gustav Mahler and Pierre Boulez, that seems likely to have struck at least some <i>Times</i> readers as faint praise.
-</p>
-<p>
-  For my part, I have no idea whether Gilbert is a great conductor or even a good one. To be sure, he performs an impressive variety of interesting compositions, but it is not necessary for me to visit Avery Fisher Hall, or anywhere else, to hear interesting orchestral music. All I have to do is to go to my CD shelf, or boot up my computer and download still more recorded music from iTunes.
-</p>
-<p>
-  Devoted concertgoers who reply that recordings are no substitute for live performance are missing the point. For the time, attention, and money of the art-loving public, classical instrumentalists must compete not only with opera houses, dance troupes, theater companies, and museums, but also with the recorded performances of the great classical musicians of the 20th century. These recordings are cheap, available everywhere, and very often much higher in artistic quality than today's live performances; moreover, they can be "consumed" at a time and place of the listener's choosing. The widespread availability of such recordings has thus brought about a crisis in the institution of the traditional classical concert.
-</p>
-<p>
-  One possible response is for classical performers to program attractive new music that is not yet available on record. Gilbert's own interest in new music has been widely noted: Alex Ross, a classical-music critic, has described him as a man who is capable of turning the Philharmonic into "a markedly different, more vibrant organization." But what will be the nature of that difference? Merely expanding the orchestra's repertoire will not be enough. If Gilbert and the Philharmonic are to succeed, they must first change the relationship between America's oldest orchestra and the new audience it hopes to attract.
-</p>
+<p>The decision of the New York Philharmonic to hire Alan Gilbert as its next music director has been the talk of the classical-music world ever since the sudden announcement of his appointment in 2009. For the most part, the response has been favorable, to say the least. "Hooray! At last!" wrote Anthony Tommasini, a sober-sided classical-music critic.</p>
+<p>One of the reasons why the appointment came as such a surprise, however, is that Gilbert is comparatively little known. Even Tommasini, who had advocated Gilbert's appointment in the <i>Times</i>, calls him "an unpretentious musician with no air of the formidable conductor about him." As a description of the next music director of an orchestra that has hitherto been led by musicians like Gustav Mahler and Pierre Boulez, that seems likely to have struck at least some <i>Times</i> readers as faint praise.</p>
+<p>For my part, I have no idea whether Gilbert is a great conductor or even a good one. To be sure, he performs an impressive variety of interesting compositions, but it is not necessary for me to visit Avery Fisher Hall, or anywhere else, to hear interesting orchestral music. All I have to do is to go to my CD shelf, or boot up my computer and download still more recorded music from iTunes.</p>
+<p>Devoted concertgoers who reply that recordings are no substitute for live performance are missing the point. For the time, attention, and money of the art-loving public, classical instrumentalists must compete not only with opera houses, dance troupes, theater companies, and museums, but also with the recorded performances of the great classical musicians of the 20th century. These recordings are cheap, available everywhere, and very often much higher in artistic quality than today's live performances; moreover, they can be "consumed" at a time and place of the listener's choosing. The widespread availability of such recordings has thus brought about a crisis in the institution of the traditional classical concert.</p>
+<p>One possible response is for classical performers to program attractive new music that is not yet available on record. Gilbert's own interest in new music has been widely noted: Alex Ross, a classical-music critic, has described him as a man who is capable of turning the Philharmonic into "a markedly different, more vibrant organization." But what will be the nature of that difference? Merely expanding the orchestra's repertoire will not be enough. If Gilbert and the Philharmonic are to succeed, they must first change the relationship between America's oldest orchestra and the new audience it hopes to attract.</p>
 </div>
 
 <hr>
 
-<!-- ====== 2. 重点词汇 ====== -->
 <h2>二、重点词汇</h2>
-
 <h3>单词</h3>
 <div class="vocab-grid">
-
-<div class="vocab-item">
-  <span class="word">philharmonic</span><span class="pos">adj. / n.</span>
-  <div class="meaning">交响乐团的；爱乐乐团</div>
-  <div class="syn">近：orchestral, symphonic</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">appointment</span><span class="pos">n.</span>
-  <div class="meaning">任命，委任；约会</div>
-  <div class="syn">近：nomination, designation</div>
-  <div class="anto">反：dismissal（解雇）</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">sober-sided</span><span class="pos">adj.</span>
-  <div class="meaning">严肃的，冷静沉着的</div>
-  <div class="syn">近：serious, solemn, staid</div>
-  <div class="anto">反：frivolous（轻浮的）</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">unpretentious</span><span class="pos">adj.</span>
-  <div class="meaning">不炫耀的，谦逊朴实的</div>
-  <div class="syn">近：modest, humble, unassuming</div>
-  <div class="anto">反：pretentious, pompous, ostentatious</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">formidable</span><span class="pos">adj.</span>
-  <div class="meaning">令人生畏的；强大的；难对付的</div>
-  <div class="syn">近：intimidating, daunting, imposing</div>
-  <div class="anto">反：unimpressive, insignificant</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">hitherto</span><span class="pos">adv.</span>
-  <div class="meaning">迄今，至今</div>
-  <div class="syn">近：previously, heretofore, thus far</div>
-  <div class="anto">反：henceforth（此后）</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">faint praise</span><span class="pos">n.</span>
-  <div class="meaning">敷衍的赞扬，名褒实贬</div>
-  <div class="syn">近：damning with faint praise</div>
-  <div class="anto">反：glowing tribute（热烈赞扬）</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">instrumentalist</span><span class="pos">n.</span>
-  <div class="meaning">器乐演奏家，乐器演奏者</div>
-  <div class="syn">近：musician, performer, player</div>
-  <div class="anto">反：vocalist（歌手）</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">troupe</span><span class="pos">n.</span>
-  <div class="meaning">剧团，表演团体，舞团</div>
-  <div class="syn">近：company, ensemble, corps</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">repertoire</span><span class="pos">n.</span>
-  <div class="meaning">全部剧目；常备曲目；全部技能</div>
-  <div class="syn">近：catalog, stock, repertory</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">markedly</span><span class="pos">adv.</span>
-  <div class="meaning">显著地，引人注目地</div>
-  <div class="syn">近：noticeably, strikingly, distinctly</div>
-  <div class="anto">反：slightly, marginally</div>
-</div>
-
-<div class="vocab-item">
-  <span class="word">vibrant</span><span class="pos">adj.</span>
-  <div class="meaning">充满活力的，生机勃勃的</div>
-  <div class="syn">近：dynamic, energetic, lively</div>
-  <div class="anto">反：dull, lifeless, stagnant</div>
-</div>
-
+<div class="vocab-item"><span class="word">philharmonic</span><span class="pos">adj. / n.</span><div class="meaning">交响乐团的；爱乐乐团</div><div class="syn">近：orchestral, symphonic</div></div>
+<div class="vocab-item"><span class="word">appointment</span><span class="pos">n.</span><div class="meaning">任命，委任；约会</div><div class="syn">近：nomination, designation</div><div class="anto">反：dismissal（解雇）</div></div>
+<div class="vocab-item"><span class="word">sober-sided</span><span class="pos">adj.</span><div class="meaning">严肃的，冷静沉着的</div><div class="syn">近：serious, solemn, staid</div><div class="anto">反：frivolous（轻浮的）</div></div>
+<div class="vocab-item"><span class="word">unpretentious</span><span class="pos">adj.</span><div class="meaning">不炫耀的，谦逊朴实的</div><div class="syn">近：modest, humble, unassuming</div><div class="anto">反：pretentious, pompous, ostentatious</div></div>
+<div class="vocab-item"><span class="word">formidable</span><span class="pos">adj.</span><div class="meaning">令人生畏的；强大的；难对付的</div><div class="syn">近：intimidating, daunting, imposing</div><div class="anto">反：unimpressive, insignificant</div></div>
+<div class="vocab-item"><span class="word">hitherto</span><span class="pos">adv.</span><div class="meaning">迄今，至今</div><div class="syn">近：previously, heretofore, thus far</div><div class="anto">反：henceforth（此后）</div></div>
+<div class="vocab-item"><span class="word">faint praise</span><span class="pos">n.</span><div class="meaning">敷衍的赞扬，名褒实贬</div><div class="syn">近：damning with faint praise</div><div class="anto">反：glowing tribute（热烈赞扬）</div></div>
+<div class="vocab-item"><span class="word">instrumentalist</span><span class="pos">n.</span><div class="meaning">器乐演奏家，乐器演奏者</div><div class="syn">近：musician, performer, player</div><div class="anto">反：vocalist（歌手）</div></div>
+<div class="vocab-item"><span class="word">troupe</span><span class="pos">n.</span><div class="meaning">剧团，表演团体，舞团</div><div class="syn">近：company, ensemble, corps</div></div>
+<div class="vocab-item"><span class="word">repertoire</span><span class="pos">n.</span><div class="meaning">全部剧目；常备曲目；全部技能</div><div class="syn">近：catalog, stock, repertory</div></div>
+<div class="vocab-item"><span class="word">markedly</span><span class="pos">adv.</span><div class="meaning">显著地，引人注目地</div><div class="syn">近：noticeably, strikingly, distinctly</div><div class="anto">反：slightly, marginally</div></div>
+<div class="vocab-item"><span class="word">vibrant</span><span class="pos">adj.</span><div class="meaning">充满活力的，生机勃勃的</div><div class="syn">近：dynamic, energetic, lively</div><div class="anto">反：dull, lifeless, stagnant</div></div>
 </div>
 
 <h3>词组 / 短语</h3>
@@ -244,136 +220,211 @@
 
 <hr>
 
-<!-- ====== 3. 长难句分析 ====== -->
 <h2>三、长难句精析</h2>
-
 <div class="sent-block">
-  <div class="en">
-    ❶ Even Tommasini, <b>who had advocated Gilbert's appointment in the <i>Times</i></b>, calls him "an unpretentious musician <b>with no air of the formidable conductor about him</b>."
-  </div>
-  <div class="analysis">
-    <b>主干：</b>Even Tommasini … calls him "…"<br>
-    <b>① 非限定性定语从句</b> <em>who had advocated … in the Times</em> 修饰 Tommasini，补充说明他曾在《纽约时报》上力挺 Gilbert。<br>
-    <b>② 介词短语作后置定语</b> <em>with no air of the formidable conductor about him</em> 修饰 musician，air 在此意为"气质、架势"，the formidable conductor 指传统意义上令人生畏的大指挥家形象。<br>
-    <b>翻译：</b>就连曾在《纽约时报》上撰文力挺 Gilbert 任命的 Tommasini，也称他为"一位谦逊低调的音乐家，身上没有那种令人生畏的大指挥家架势。"
-  </div>
+<div class="en">❶ Even Tommasini, <b>who had advocated Gilbert's appointment in the <i>Times</i></b>, calls him "an unpretentious musician <b>with no air of the formidable conductor about him</b>."</div>
+<div class="analysis"><b>主干：</b>Even Tommasini … calls him "…"<br><b>① 非限定性定语从句</b> <em>who had advocated … in the Times</em> 修饰 Tommasini，补充说明他曾在《纽约时报》上力挺 Gilbert。<br><b>② 介词短语作后置定语</b> <em>with no air of the formidable conductor about him</em> 修饰 musician，air 在此意为"气质、架势"。<br><b>翻译：</b>就连曾在《纽约时报》上撰文力挺 Gilbert 任命的 Tommasini，也称他为"一位谦逊低调的音乐家，身上没有那种令人生畏的大指挥家架势。"</div>
 </div>
-
 <div class="sent-block">
-  <div class="en">
-    ❷ <b>As a description of the next music director of an orchestra <em>that has hitherto been led by musicians like Gustav Mahler and Pierre Boulez</em></b>, that seems likely to have struck at least some <i>Times</i> readers as faint praise.
-  </div>
-  <div class="analysis">
-    <b>主干：</b>that seems likely to have struck … readers as faint praise<br>
-    <b>① 主干中</b> that 指代上一句中 Tommasini 对 Gilbert 的描写；strike sb as … = 给某人留下……印象；faint praise 意为"不痛不痒的称赞"。<br>
-    <b>② As 介词短语作状语</b>，引出"以……身份/作为对……的描述来看"这一评判视角，内部嵌套一个 <em>that 定语从句</em>修饰 orchestra，指出该乐团曾由马勒、布列兹等大师执掌。<br>
-    <b>翻译：</b>作为对一支迄今由 Gustav Mahler、Pierre Boulez 等音乐大师执掌过的乐团的下一任音乐总监的描述，这番话在至少一部分《纽约时报》读者看来，恐怕不过是客套的敷衍之词罢了。
-  </div>
+<div class="en">❷ <b>As a description of the next music director of an orchestra <em>that has hitherto been led by musicians like Gustav Mahler and Pierre Boulez</em></b>, that seems likely to have struck at least some <i>Times</i> readers as faint praise.</div>
+<div class="analysis"><b>主干：</b>that seems likely to have struck … readers as faint praise<br><b>① 主干中</b> that 指代上一句 Tommasini 对 Gilbert 的描写；strike sb as … = 给某人留下……印象。<br><b>② As 介词短语作状语</b>，引出评判视角，内部嵌套 <em>that 定语从句</em>修饰 orchestra，指出该乐团曾由马勒、布列兹等大师执掌。<br><b>翻译：</b>作为对一支迄今由 Gustav Mahler、Pierre Boulez 等音乐大师执掌过的乐团的下一任音乐总监的描述，这番话在至少一部分《纽约时报》读者看来，恐怕不过是客套的敷衍之词罢了。</div>
 </div>
-
 <div class="sent-block">
-  <div class="en">
-    ❸ <b>For the time, attention, and money of the art-loving public</b>, classical instrumentalists must compete <b>not only with opera houses, dance troupes, theater companies, and museums, but also with the recorded performances of the great classical musicians of the 20th century</b>.
-  </div>
-  <div class="analysis">
-    <b>主干：</b>classical instrumentalists must compete [not only with A … but also with B]<br>
-    <b>① For 介词短语</b> 作目的/方面状语，说明竞争的领域是"艺术爱好者的时间、注意力和金钱"。<br>
-    <b>② not only … but also … 并列结构</b> 连接两大类竞争对手：A 类为歌剧院、舞团、剧团、博物馆（现场艺术机构），B 类为 20 世纪古典音乐大师的录音制品（非现场替代品）。全句结构虽长但逻辑非常清晰。<br>
-    <b>翻译：</b>为了争夺艺术爱好者的时间、注意力和金钱，古典器乐演奏家不仅必须与歌剧院、舞团、剧团和博物馆竞争，还要与 20 世纪伟大古典音乐家们的录音作品竞争。
-  </div>
+<div class="en">❸ <b>For the time, attention, and money of the art-loving public</b>, classical instrumentalists must compete <b>not only with opera houses, dance troupes, theater companies, and museums, but also with the recorded performances of the great classical musicians of the 20th century</b>.</div>
+<div class="analysis"><b>主干：</b>classical instrumentalists must compete [not only with A … but also with B]<br><b>① For 介词短语</b> 作目的/方面状语，说明竞争的领域是"艺术爱好者的时间、注意力和金钱"。<br><b>② not only … but also … 并列结构</b> 连接两大类竞争对手：现场艺术机构 vs. 20 世纪大师的录音制品。<br><b>翻译：</b>为了争夺艺术爱好者的时间、注意力和金钱，古典器乐演奏家不仅必须与歌剧院、舞团、剧团和博物馆竞争，还要与 20 世纪伟大古典音乐家们的录音作品竞争。</div>
 </div>
-
 <div class="sent-block">
-  <div class="en">
-    ❹ <b>Devoted concertgoers <em>who reply that recordings are no substitute for live performance</em></b> are missing the point.
-  </div>
-  <div class="analysis">
-    <b>主干：</b>Devoted concertgoers … are missing the point.<br>
-    <b>定语从句</b> <em>who reply that recordings are no substitute for live performance</em> 修饰 concertgoers，其中 reply 后又带了一个 <em>that 宾语从句</em>，形成"嵌套从句"结构。理解时要剥开两层：concertgoers reply (that)，→ recordings are no substitute for live performance。<br>
-    <b>翻译：</b>那些忠实的音乐会观众反驳说，录音制品无法替代现场演奏——但这些人其实没抓住问题的关键。
-  </div>
+<div class="en">❹ <b>Devoted concertgoers <em>who reply that recordings are no substitute for live performance</em></b> are missing the point.</div>
+<div class="analysis"><b>主干：</b>Devoted concertgoers … are missing the point.<br><b>定语从句嵌套宾语从句</b> <em>who reply that …</em> 修饰 concertgoers，reply 后带 <em>that 宾语从句</em>，形成两层嵌套。<br><b>翻译：</b>那些忠实的音乐会观众反驳说，录音制品无法替代现场演奏——但这些人其实没抓住问题的关键。</div>
 </div>
-
 <div class="sent-block">
-  <div class="en">
-    ❺ <b>If Gilbert and the Philharmonic are to succeed</b>, they must first change the relationship <b>between America's oldest orchestra and the new audience <em>it hopes to attract</em></b>.
-  </div>
-  <div class="analysis">
-    <b>主干：</b>they must first change the relationship [between A and B]<br>
-    <b>① If … are to succeed</b> 是一种特殊的条件句式，"be to do"表示"要想……/如果要……"，带有目的性。<br>
-    <b>② between … and … 结构</b> 连接两个对象，其中 America's oldest orchestra 是 the Philharmonic 的同义复指。<br>
-    <b>③ 省略关系词的定语从句</b> <em>(that / whom) it hopes to attract</em> 修饰 the new audience。<br>
-    <b>翻译：</b>如果 Gilbert 和纽约爱乐想要成功，他们首先必须改变这支美国历史最悠久的管弦乐团与它希望吸引的新观众之间的关系。
-  </div>
+<div class="en">❺ <b>If Gilbert and the Philharmonic are to succeed</b>, they must first change the relationship <b>between America's oldest orchestra and the new audience <em>it hopes to attract</em></b>.</div>
+<div class="analysis"><b>主干：</b>they must first change the relationship [between A and B]<br><b>① If … are to succeed</b> 特殊条件句式，"be to do"表"要想/如果要……"。<br><b>② 省略关系词的定语从句</b> <em>(that / whom) it hopes to attract</em> 修饰 the new audience。<br><b>翻译：</b>如果 Gilbert 和纽约爱乐想要成功，他们首先必须改变这支美国历史最悠久的管弦乐团与它希望吸引的新观众之间的关系。</div>
 </div>
 
 <hr>
 
-<!-- ====== 4. 中文译文 ====== -->
 <h2>四、全文中文译文</h2>
 <div class="trans">
-<p>
-  纽约爱乐乐团决定聘用 Alan Gilbert 担任下一任音乐总监，这一决定自 2009 年突然公布任命以来，一直是古典音乐界热议的话题。总的来说，反响至少可以说是积极的。以严肃冷静著称的古典乐评人 Anthony Tommasini 甚至写道："好哇！终于等到这一天了！"
-</p>
-<p>
-  然而，这次任命之所以令人如此意外，原因之一是 Gilbert 的知名度相对较低。就连曾在《纽约时报》上发文力主任命 Gilbert 的 Tommasini，也称他为"一位谦逊低调的音乐家，身上没有那种令人生畏的大指挥家架势"。考虑到纽约爱乐此前一直由像 Gustav Mahler 和 Pierre Boulez 这样的音乐巨匠执掌，这番话作为对下一任音乐总监的描述，至少在一些《纽约时报》读者看来，恐怕只能算是敷衍的客气话了。
-</p>
-<p>
-  就我而言，我完全不知道 Gilbert 算不算一位伟大的指挥家，甚至连他是不是一位好指挥都说不上来。诚然，他演绎了数量可观且风格多样的有趣曲目，但我并不需要专程跑到 Avery Fisher 音乐厅——或任何其他地方——去听有趣的管弦乐。我只需走到 CD 架前，或者启动电脑从 iTunes 上下载更多的录制音乐即可。
-</p>
-<p>
-  那些忠实的音乐会常客反驳说录音无法替代现场演奏，但他们并没抓住问题的要害。为了争取艺术爱好者的时间、精力和金钱，古典器乐演奏家不仅要和歌剧院、舞蹈团、剧团和博物馆竞争，还要和 20 世纪伟大古典音乐家们的录制作品竞争。这些录音价格低廉、随处可见，而且其艺术品质往往远高于当今的现场演出；更重要的是，听众可以在自己选择的时间和地点来"消费"它们。正因如此，录音制品的广泛普及已经引发了传统古典音乐会体制的一场危机。
-</p>
-<p>
-  一种可能的应对之策是，古典音乐演奏者去安排一些有吸引力、且尚未有录音制品的新曲目。Gilbert 本人对新音乐的兴趣已被广泛报道：古典乐评人 Alex Ross 称他是一个能够将纽约爱乐转变为"一支面貌焕然一新、更加生机勃勃的乐团"的人物。然而，这种"不同"的本质又会是什么呢？仅仅扩充乐团的保留曲目是不够的。如果 Gilbert 和纽约爱乐想要成功，他们首先必须改变这支美国历史最悠久的管弦乐团与它希望吸引的新观众之间的关系。
-</p>
+<p>纽约爱乐乐团决定聘用 Alan Gilbert 担任下一任音乐总监，这一决定自 2009 年突然公布任命以来，一直是古典音乐界热议的话题。总的来说，反响至少可以说是积极的。以严肃冷静著称的古典乐评人 Anthony Tommasini 甚至写道："好哇！终于等到这一天了！"</p>
+<p>然而，这次任命之所以令人如此意外，原因之一是 Gilbert 的知名度相对较低。就连曾在《纽约时报》上发文力主任命 Gilbert 的 Tommasini，也称他为"一位谦逊低调的音乐家，身上没有那种令人生畏的大指挥家架势"。考虑到纽约爱乐此前一直由像 Gustav Mahler 和 Pierre Boulez 这样的音乐巨匠执掌，这番话作为对下一任音乐总监的描述，至少在一些《纽约时报》读者看来，恐怕只能算是敷衍的客气话了。</p>
+<p>就我而言，我完全不知道 Gilbert 算不算一位伟大的指挥家，甚至连他是不是一位好指挥都说不上来。诚然，他演绎了数量可观且风格多样的有趣曲目，但我并不需要专程跑到 Avery Fisher 音乐厅——或任何其他地方——去听有趣的管弦乐。我只需走到 CD 架前，或者启动电脑从 iTunes 上下载更多的录制音乐即可。</p>
+<p>那些忠实的音乐会常客反驳说录音无法替代现场演奏，但他们并没抓住问题的要害。为了争取艺术爱好者的时间、精力和金钱，古典器乐演奏家不仅要和歌剧院、舞蹈团、剧团和博物馆竞争，还要和 20 世纪伟大古典音乐家们的录制作品竞争。这些录音价格低廉、随处可见，而且其艺术品质往往远高于当今的现场演出；更重要的是，听众可以在自己选择的时间和地点来"消费"它们。正因如此，录音制品的广泛普及已经引发了传统古典音乐会体制的一场危机。</p>
+<p>一种可能的应对之策是，古典音乐演奏者去安排一些有吸引力、且尚未有录音制品的新曲目。Gilbert 本人对新音乐的兴趣已被广泛报道：古典乐评人 Alex Ross 称他是一个能够将纽约爱乐转变为"一支面貌焕然一新、更加生机勃勃的乐团"的人物。然而，这种"不同"的本质又会是什么呢？仅仅扩充乐团的保留曲目是不够的。如果 Gilbert 和纽约爱乐想要成功，他们首先必须改变这支美国历史最悠久的管弦乐团与它希望吸引的新观众之间的关系。</p>
 </div>
 
 <hr>
 
-<!-- ====== 5. 篇章总结 ====== -->
 <h2>五、文章主旨概要</h2>
 <div class="summary-box">
-  本文围绕纽约爱乐乐团任命 Alan Gilbert 为新任音乐总监这一事件展开。作者开篇指出虽然乐界反应总体积极，但 Gilbert 知名度不高、外界评价亦是褒中带贬。随后笔锋一转，将讨论引向更宏观的命题：<strong>录音制品的普及如何撼动了传统古典音乐会的生存根基</strong>——如今任何人在任何地点都能以极低成本享受到高品质的古典音乐录音，现场演出不再是唯一的选择，这使传统音乐会面临制度性危机。最后，文章回到 Gilbert 身上，提出他若要真正"复兴"纽约爱乐，仅靠扩充新颖曲目远远不够，关键在于<strong>重塑乐团与新时代听众之间的关系</strong>。全文以一种冷静克制、欲扬先抑的笔调，完成了一次对古典音乐行业困境的犀利剖析。
+本文围绕纽约爱乐乐团任命 Alan Gilbert 为新任音乐总监这一事件展开。作者开篇指出虽然乐界反应总体积极，但 Gilbert 知名度不高、外界评价亦是褒中带贬。随后笔锋一转，将讨论引向更宏观的命题：<strong>录音制品的普及如何撼动了传统古典音乐会的生存根基</strong>——如今任何人在任何地点都能以极低成本享受到高品质的古典音乐录音，现场演出不再是唯一的选择，这使传统音乐会面临制度性危机。最后，文章回到 Gilbert 身上，提出他若要真正"复兴"纽约爱乐，仅靠扩充新颖曲目远远不够，关键在于<strong>重塑乐团与新时代听众之间的关系</strong>。
 </div>
 
 <hr>
 
-<!-- ====== 附：真题题目（供参考） ====== -->
 <h2>附：真题题目</h2>
 <div class="passage" style="font-size:.9rem;">
-<p style="text-indent:0">
-21. We learn from Paragraph 1 that Gilbert's appointment has ______.<br>
-&nbsp;&nbsp;[A] incurred criticism &nbsp;&nbsp; [B] raised suspicion<br>
-&nbsp;&nbsp;[C] received acclaim &nbsp;&nbsp; [D] aroused curiosity
-</p>
-<p style="text-indent:0">
-22. Tommasini regards Gilbert as an artist who is ______.<br>
-&nbsp;&nbsp;[A] influential &nbsp;&nbsp; [B] modest &nbsp;&nbsp; [C] respectable &nbsp;&nbsp; [D] talented
-</p>
-<p style="text-indent:0">
-23. The author believes that the devoted concertgoers ______.<br>
-&nbsp;&nbsp;[A] ignore the expenses of live performances<br>
-&nbsp;&nbsp;[B] reject most kinds of recorded performances<br>
-&nbsp;&nbsp;[C] exaggerate the variety of live performances<br>
-&nbsp;&nbsp;[D] overestimate the value of live performances
-</p>
-<p style="text-indent:0">
-24. According to the text, which of the following is true of recordings?<br>
-&nbsp;&nbsp;[A] They are often inferior to live concerts in quality.<br>
-&nbsp;&nbsp;[B] They are easily accessible to the general public.<br>
-&nbsp;&nbsp;[C] They help improve the quality of music.<br>
-&nbsp;&nbsp;[D] They have only covered masterpieces.
-</p>
-<p style="text-indent:0">
-25. Regarding Gilbert's role in revitalizing the Philharmonic, the author feels ______.<br>
-&nbsp;&nbsp;[A] doubtful &nbsp;&nbsp; [B] enthusiastic &nbsp;&nbsp; [C] confident &nbsp;&nbsp; [D] puzzled
-</p>
-<p style="margin-top:.8rem; color:#999; font-size:.8rem; text-indent:0;">
-参考答案：C &nbsp; B &nbsp; D &nbsp; B &nbsp; A
-</p>
+<p style="text-indent:0">21. We learn from Paragraph 1 that Gilbert's appointment has ______.<br>&nbsp;&nbsp;[A] incurred criticism &nbsp;&nbsp; [B] raised suspicion<br>&nbsp;&nbsp;[C] received acclaim &nbsp;&nbsp; [D] aroused curiosity</p>
+<p style="text-indent:0">22. Tommasini regards Gilbert as an artist who is ______.<br>&nbsp;&nbsp;[A] influential &nbsp;&nbsp; [B] modest &nbsp;&nbsp; [C] respectable &nbsp;&nbsp; [D] talented</p>
+<p style="text-indent:0">23. The author believes that the devoted concertgoers ______.<br>&nbsp;&nbsp;[A] ignore the expenses of live performances<br>&nbsp;&nbsp;[B] reject most kinds of recorded performances<br>&nbsp;&nbsp;[C] exaggerate the variety of live performances<br>&nbsp;&nbsp;[D] overestimate the value of live performances</p>
+<p style="text-indent:0">24. According to the text, which of the following is true of recordings?<br>&nbsp;&nbsp;[A] They are often inferior to live concerts in quality.<br>&nbsp;&nbsp;[B] They are easily accessible to the general public.<br>&nbsp;&nbsp;[C] They help improve the quality of music.<br>&nbsp;&nbsp;[D] They have only covered masterpieces.</p>
+<p style="text-indent:0">25. Regarding Gilbert's role in revitalizing the Philharmonic, the author feels ______.<br>&nbsp;&nbsp;[A] doubtful &nbsp;&nbsp; [B] enthusiastic &nbsp;&nbsp; [C] confident &nbsp;&nbsp; [D] puzzled</p>
+<p style="margin-top:.8rem; color:#999; font-size:.8rem; text-indent:0;">参考答案：C &nbsp; B &nbsp; D &nbsp; B &nbsp; A</p>
 </div>
 
+</div><!-- /#text1 -->
+
+<!-- ==================== TEXT 2 ==================== -->
+<div class="article-panel" id="text2">
+
+<h1>Text 2 &mdash; 高管"裸辞"：不找下家就离职</h1>
+
+<h2>一、原文</h2>
+<div class="passage">
+<p>When Liam McGee departed as president of Bank of America in August, his explanation was surprisingly straight up. Rather than cloaking his exit in the usual vague excuses, he came right out and said he was leaving "to pursue my goal of running a company." Broadcasting his ambition was "very much my decision," McGee says. Within two weeks, he was talking for the first time with the board of Hartford Financial Services Group, which named him CEO and chairman on September 29.</p>
+<p>McGee says leaving without a position lined up gave him time to reflect on what kind of company he wanted to run. It also sent a clear message to the outside world about his aspirations. And McGee isn't alone. In recent weeks the No. 2 executives at Avon and American Express quit with the explanation that they were looking for a CEO post. As boards scrutinize succession plans in response to shareholder pressure, executives who don't get the nod also may wish to move on. A turbulent business environment also has senior managers cautious of letting vague pronouncements cloud their reputations.</p>
+<p>As the first signs of recovery begin to take hold, deputy chiefs may be more willing to make the jump without a net. In the third quarter, CEO turnover was down 23% from a year ago as nervous boards stuck with the leaders they had, according to Liberum Research. As the economy picks up, opportunities will abound for aspiring leaders.</p>
+<p>The decision to quit a senior position to look for a better one is unconventional. For years executives and headhunters have adhered to the rule that the most attractive CEO candidates are the ones who must be poached. Says Korn/Ferry senior partner Dennis Carey: "I can't think of a single search I've done where a board has not instructed me to look at sitting CEOs first."</p>
+<p>Those who jumped without a job haven't always landed in top positions quickly. Ellen Marram quit as chief of Tropicana a decade ago, saying she wanted to be a CEO. It was a year before she became head of a tiny Internet-based commodities exchange. Robert Willumstad left Citigroup in 2005 with ambitions to be a CEO. He finally took that post at a major financial institution three years later.</p>
+<p>Many recruiters say the old disgrace is fading for top performers. The financial crisis has made it more acceptable to be between jobs or to leave a bad one. "The traditional rule was it's safer to stay where you are, but that's been fundamentally inverted," says one headhunter. "The people who've been hurt the worst are those who've stayed too long."</p>
 </div>
+
+<hr>
+
+<h2>二、重点词汇</h2>
+<h3>单词</h3>
+<div class="vocab-grid">
+<div class="vocab-item"><span class="word">depart</span><span class="pos">v.</span><div class="meaning">离开，离职，启程</div><div class="syn">近：leave, resign, exit</div><div class="anto">反：arrive, stay, remain</div></div>
+<div class="vocab-item"><span class="word">cloak</span><span class="pos">v. / n.</span><div class="meaning">掩饰，掩盖；斗篷</div><div class="syn">近：conceal, mask, disguise</div><div class="anto">反：reveal, expose, unveil</div></div>
+<div class="vocab-item"><span class="word">vague</span><span class="pos">adj.</span><div class="meaning">模糊的，含糊的，不明确的</div><div class="syn">近：ambiguous, obscure, unclear</div><div class="anto">反：explicit, precise, definite</div></div>
+<div class="vocab-item"><span class="word">aspiration</span><span class="pos">n.</span><div class="meaning">抱负，志向，渴望</div><div class="syn">近：ambition, aim, longing</div><div class="anto">反：indifference, apathy</div></div>
+<div class="vocab-item"><span class="word">scrutinize</span><span class="pos">v.</span><div class="meaning">仔细审查，认真检查</div><div class="syn">近：examine, inspect, probe</div><div class="anto">反：overlook, neglect, ignore</div></div>
+<div class="vocab-item"><span class="word">succession</span><span class="pos">n.</span><div class="meaning">继任，接替；一连串</div><div class="syn">近：sequence, inheritance, chain</div></div>
+<div class="vocab-item"><span class="word">turbulent</span><span class="pos">adj.</span><div class="meaning">动荡的，混乱的，汹涌的</div><div class="syn">近：chaotic, stormy, unstable</div><div class="anto">反：stable, calm, peaceful</div></div>
+<div class="vocab-item"><span class="word">pronouncement</span><span class="pos">n.</span><div class="meaning">声明，公告，表态</div><div class="syn">近：declaration, statement, proclamation</div></div>
+<div class="vocab-item"><span class="word">deputy</span><span class="pos">n. / adj.</span><div class="meaning">副手，副职；代理的</div><div class="syn">近：assistant, vice, second-in-command</div></div>
+<div class="vocab-item"><span class="word">abound</span><span class="pos">v.</span><div class="meaning">大量存在，充满，富于</div><div class="syn">近：proliferate, flourish, teem</div><div class="anto">反：dwindle, lack, scarce</div></div>
+<div class="vocab-item"><span class="word">unconventional</span><span class="pos">adj.</span><div class="meaning">非传统的，不寻常的，反常规的</div><div class="syn">近：unorthodox, atypical, unusual</div><div class="anto">反：conventional, orthodox, traditional</div></div>
+<div class="vocab-item"><span class="word">poach</span><span class="pos">v.</span><div class="meaning">挖走（人才）；偷猎；水煮</div><div class="syn">近：headhunt, recruit, steal</div><div class="anto">反：retain, keep</div></div>
+<div class="vocab-item"><span class="word">disgrace</span><span class="pos">n. / v.</span><div class="meaning">耻辱，丢脸；使蒙羞</div><div class="syn">近：shame, dishonor, stigma</div><div class="anto">反：honor, prestige, esteem</div></div>
+<div class="vocab-item"><span class="word">invert</span><span class="pos">v.</span><div class="meaning">颠倒，反转，倒置</div><div class="syn">近：reverse, overturn, flip</div><div class="anto">反：maintain, preserve</div></div>
+</div>
+
+<h3>词组 / 短语</h3>
+<table class="phrase-table">
+<tr><td>straight up</td><td>坦率的，直截了当的</td><td>He gave me a <em>straight up</em> answer.</td></tr>
+<tr><td>cloak sth in</td><td>用……掩饰/掩盖</td><td>She <em>cloaked</em> her anger <em>in</em> a smile.</td></tr>
+<tr><td>come right out and say</td><td>直截了当地说</td><td>He <em>came right out and said</em> he was quitting.</td></tr>
+<tr><td>line up</td><td>安排好，排队等候</td><td>I have a new job <em>lined up</em>.</td></tr>
+<tr><td>reflect on</td><td>反思，认真思考</td><td>Take time to <em>reflect on</em> your options.</td></tr>
+<tr><td>get the nod</td><td>获得批准/首肯/点头</td><td>Three candidates were considered but only one <em>got the nod</em>.</td></tr>
+<tr><td>move on</td><td>继续前进；离职换工作</td><td>After five years, she decided to <em>move on</em>.</td></tr>
+<tr><td>take hold</td><td>开始起作用，确立下来</td><td>The recovery is beginning to <em>take hold</em>.</td></tr>
+<tr><td>make the jump without a net</td><td>冒险跳槽（没找好下家就离职）</td><td>More executives are <em>making the jump without a net</em>.</td></tr>
+<tr><td>pick up</td><td>（经济等）好转，复苏</td><td>The economy is finally <em>picking up</em>.</td></tr>
+<tr><td>adhere to</td><td>遵守，坚持（规则/原则）</td><td>They strictly <em>adhere to</em> company policy.</td></tr>
+<tr><td>sitting (adj.)</td><td>在职的，现任的</td><td>The board prefers to look at <em>sitting</em> CEOs first.</td></tr>
+<tr><td>between jobs</td><td>待业中（委婉说法）</td><td>He's <em>between jobs</em> at the moment.</td></tr>
+</table>
+
+<hr>
+
+<h2>三、长难句精析</h2>
+<div class="sent-block">
+<div class="en">❶ <b>Rather than cloaking his exit in the usual vague excuses</b>, he came right out and said <em>he was leaving "to pursue my goal of running a company."</em></div>
+<div class="analysis"><b>主干：</b>he came right out and said …<br><b>① Rather than + 动名词</b> 作状语，表示"不是……而是……"，cloak … in … 意为"用……掩饰……"。<br><b>② said 后接省略 that 的宾语从句</b>，其中 <em>to pursue my goal of running a company</em> 是不定式作目的状语。<br><b>翻译：</b>他没有用惯常的含糊借口来掩饰自己的离职，而是直截了当地说，他离开是"为了追寻自己经营一家公司的目标"。</div>
+</div>
+<div class="sent-block">
+<div class="en">❷ <b>As boards scrutinize succession plans in response to shareholder pressure</b>, executives <em>who don't get the nod</em> also may wish to move on.</div>
+<div class="analysis"><b>主干：</b>executives … may wish to move on<br><b>① As 引导时间/原因状语从句</b>，表示"随着……/由于……"，in response to … 意为"作为对……的回应/迫于……"。<br><b>② who 定语从句</b>修饰 executives，get the nod 是习语，指"获得首肯/被选中接任"。<br><b>翻译：</b>随着董事会迫于股东压力开始严格审查继任计划，那些没被选中的高管们也可能想另谋出路。</div>
+</div>
+<div class="sent-block">
+<div class="en">❸ A turbulent business environment also <b>has senior managers cautious of letting vague pronouncements cloud their reputations</b>.</div>
+<div class="analysis"><b>主干：</b>A turbulent business environment … has senior managers cautious …<br><b>① have + 宾语 + 形容词（宾补）</b> 结构，表示"使……处于某种状态"。<br><b>② cautious of + 动名词短语</b> 说明谨慎的内容，其中 let … cloud … 是"let + 宾语 + 宾补（动词原形）"结构。<br><b>翻译：</b>动荡的商业环境也使得高管们十分谨慎，不愿让含糊其辞的表态玷污自己的声誉。</div>
+</div>
+<div class="sent-block">
+<div class="en">❹ "I can't think of a single search I've done <b>where a board has not instructed me to look at sitting CEOs first</b>."</div>
+<div class="analysis"><b>主干：</b>I can't think of a single search …<br><b>① 双重否定</b> can't think of … has not instructed = 每一次董事会都要求……。I've done 是省略关系词的定语从句修饰 search。<br><b>② where 定语从句</b>修饰 search，sitting CEOs 指"在任的 CEO"。<br><b>翻译：</b>"在我所做过的每一次高管搜寻中，董事会无不要求我优先考虑那些在任的 CEO。"</div>
+</div>
+<div class="sent-block">
+<div class="en">❺ "The traditional rule was <em>it's safer to stay where you are</em>, <b>but that's been fundamentally inverted</b>."</div>
+<div class="analysis"><b>主干：</b>The traditional rule was … , but that's been … inverted<br><b>① 表语从句</b> <em>it's safer to stay where you are</em> 作 was 的表语，其中 where you are 是地点状语从句。<br><b>② but 并列转折句</b>，fundamentally inverted 意为"被彻底颠覆"，现在完成时的被动语态强调变化已完成且影响至今。<br><b>翻译：</b>"传统的规则是待在原地更安全，但这一点已被彻底颠覆。"</div>
+</div>
+
+<hr>
+
+<h2>四、全文中文译文</h2>
+<div class="trans">
+<p>当 Liam McGee 于去年 8 月辞去美国银行总裁一职时，他的解释出人意料地坦率。他没有用惯常的含糊借口来掩饰自己的离去，而是直截了当地说他离开是"为了追寻自己经营一家公司的目标"。McGee 表示，公开表露自己的抱负"完全是我个人的决定"。不出两周，他便开始与 Hartford 金融服务集团的董事会进行首次会谈，该集团于 9 月 29 日任命他为 CEO 兼董事长。</p>
+<p>McGee 称，在没有找好下家的情况下离职，给了他时间认真思考自己究竟想经营一家什么样的公司，同时也向外界传递了一个关于他职业抱负的清晰信号。而 McGee 并非个例。最近几周，Avon 和 American Express 的二号高管也相继辞职，给出的理由都是想谋求一个 CEO 的职位。随着董事会迫于股东压力开始严格审查继任计划，那些没被选中接棒的高管们可能也想抽身离开。动荡的商业环境同样让高管们格外谨慎，不愿让模棱两可的表态给自己的声誉蒙上阴影。</p>
+<p>随着经济复苏的初步迹象开始确立，副手们可能更愿意冒着风险"裸跳"。根据 Liberum Research 的数据，第三季度 CEO 更替率较去年同期下降了 23%，原因是紧张的董事会选择继续留用现有领导者。而随着经济回暖，对于有抱负的领导者而言，机会将大量涌现。</p>
+<p>辞去高管职位去寻找更好的机会，这种做法并不合乎传统。多年来，高管和猎头们都信奉这样一条规则：最有吸引力的 CEO 候选人，是那些必须被"挖"过来的人。Korn/Ferry 的资深合伙人 Dennis Carey 说道："在我所做过的每一次寻访中，董事会无不要求我优先考虑那些在任的 CEO。"</p>
+<p>那些没找好下家就辞职的人，也并非总能迅速登上高位。Ellen Marram 十年前辞去 Tropicana 公司负责人一职，称自己想当 CEO，结果过了一年才当上一家小型互联网商品交易所的掌门人。Robert Willumstad 于 2005 年离开花旗集团，怀揣着成为 CEO 的抱负，三年后才终于在一家大型金融机构坐上了那个位置。</p>
+<p>许多招聘人士表示，对顶尖人才而言，过去那种"离职即耻辱"的观念正在消退。金融危机使得待业——或是离开一份糟糕的工作——变得更容易被接受了。一位猎头说道："传统的规则是待在原地更安全，但这一点已被彻底颠覆。受伤最深的，往往是那些在一个地方待得太久的人。"</p>
+</div>
+
+<hr>
+
+<h2>五、文章主旨概要</h2>
+<div class="summary-box">
+本文以美国银行前总裁 Liam McGee 坦率宣布"裸辞"（不找下家就直接离职）为引子，揭示了高管职场中的一种新趋势：<strong>越来越多的高管不再遵循"骑驴找马"的传统规则，而是公开表露职业抱负，在没有安全网的情况下大胆一跳</strong>。文章分析了这一现象背后的多重驱动力——董事会迫于股东压力收紧继任审查、未获提拔的高管选择出走、以及经济复苏带来的机会增多——同时指出"裸辞"并非总能快速落地。最后，文章点明核心变化：<strong>旧时代的职场耻辱感正在消退，固守原位不再是最安全的选择</strong>。
+</div>
+
+<hr>
+
+<h2>附：真题题目</h2>
+<div class="passage" style="font-size:.9rem;">
+<p style="text-indent:0">26. When McGee announced his departure, his manner can best be described as being ______.<br>&nbsp;&nbsp;[A] arrogant &nbsp;&nbsp; [B] frank &nbsp;&nbsp; [C] self-centered &nbsp;&nbsp; [D] impulsive</p>
+<p style="text-indent:0">27. According to Paragraph 2, senior executives' quitting may be spurred by ______.<br>&nbsp;&nbsp;[A] their expectation of better financial status<br>&nbsp;&nbsp;[B] their need to reflect on their private life<br>&nbsp;&nbsp;[C] their strained relations with the boards<br>&nbsp;&nbsp;[D] their pursuit of new career goals</p>
+<p style="text-indent:0">28. The word "poached" (Paragraph 4) most probably means ______.<br>&nbsp;&nbsp;[A] approved of &nbsp;&nbsp; [B] attended to &nbsp;&nbsp; [C] hunted for &nbsp;&nbsp; [D] guarded against</p>
+<p style="text-indent:0">29. It can be inferred from the last paragraph that ______.<br>&nbsp;&nbsp;[A] top performers used to cling to their posts<br>&nbsp;&nbsp;[B] loyalty of top performers is getting out-dated<br>&nbsp;&nbsp;[C] top performers care more about reputations<br>&nbsp;&nbsp;[D] it's safer to stick to the traditional rules</p>
+<p style="text-indent:0">30. Which of the following is the best title for the text?<br>&nbsp;&nbsp;[A] CEOs: Where to Go?<br>&nbsp;&nbsp;[B] CEOs: All the Way Up?<br>&nbsp;&nbsp;[C] Top Managers Jump Without a Net<br>&nbsp;&nbsp;[D] The Only Way Out for Top Performers</p>
+<p style="margin-top:.8rem; color:#999; font-size:.8rem; text-indent:0;">参考答案：B &nbsp; D &nbsp; C &nbsp; A &nbsp; C</p>
+</div>
+
+</div><!-- /#text2 -->
+
+</div><!-- /.container -->
+
+<script>
+(function() {
+  // ====== Tab switching ======
+  var tabs = document.querySelectorAll('#tab-group button');
+  var panels = document.querySelectorAll('.article-panel');
+
+  tabs.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var target = this.getAttribute('data-target');
+      tabs.forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById(target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ====== Dark mode ======
+  var darkBtn = document.getElementById('dark-btn');
+  var body = document.body;
+
+  // Apply saved preference
+  if (localStorage.getItem('reading-dark') === 'on') {
+    body.classList.add('dark');
+    darkBtn.innerHTML = '☀ 亮色模式';
+  }
+
+  darkBtn.addEventListener('click', function() {
+    var isDark = body.classList.toggle('dark');
+    if (isDark) {
+      darkBtn.innerHTML = '☀ 亮色模式';
+      localStorage.setItem('reading-dark', 'on');
+    } else {
+      darkBtn.innerHTML = '🌙 暗色模式';
+      localStorage.setItem('reading-dark', 'off');
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
